@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - Introduction to Graph Theory</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #34495e;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Lesson header */
+        .lesson-header {
+            background-color: white;
+            border-radius: 8px 8px 0 0;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-icon {
+            background-color: #3498db;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .lesson-title-section h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tech-tag {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* Lesson content */
+        .lesson-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .next-section {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .next-section:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Navigation buttons */
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        /* Code blocks */
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        
+        code {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+            
+            .lesson-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .lesson-icon {
+                margin: 0 0 15px 0;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">SmartLearn</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="lessons.html" class="active">Lessons</a></li>
+            <li><a href="quizzes.html">Quizzes</a></li>
+            <li><a href="discussion.html">Discussion</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <div class="lesson-icon">
+                <i>05</i>
+            </div>
+            <div class="lesson-title-section">
+                <h1>Introduction to Graph Theory</h1>
+                <div class="tech-tags">
+                    <span class="tech-tag">Vertices & Edges</span>
+                    <span class="tech-tag">Paths</span>
+                    <span class="tech-tag">Traversal</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson Content -->
+        <div class="lesson-content">
+            <!-- Introduction Section -->
+            <div class="section" id="section-1">
+                <h2>Graph Theory Fundamentals</h2>
+                <p>Graph theory is a branch of mathematics that studies the relationships between objects. Graphs are mathematical structures used to model pairwise relations between objects and are one of the most versatile tools in computer science and mathematics.</p>
+                
+                <div class="image-container">
+                    <img src="22.png" alt="Basic graph with vertices and edges">
+                </div>
+                
+                <h3>Basic Graph Terminology</h3>
+                
+                <p>A graph G consists of:</p>
+                <ul>
+                    <li><strong>Vertices (V)</strong>: Also called nodes, these are the fundamental units of a graph.</li>
+                    <li><strong>Edges (E)</strong>: Connections between pairs of vertices, representing relationships.</li>
+                </ul>
+                
+                <p>Mathematically, a graph G is represented as G = (V, E), where V is a set of vertices and E is a set of edges.</p>
+                
+                <h3>Types of Graphs</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Undirected Graph</td>
+                            <td>Edges have no direction, representing symmetric relationships</td>
+                            <td>Friendship networks, road connections</td>
+                        </tr>
+                        <tr>
+                            <td>Directed Graph (Digraph)</td>
+                            <td>Edges have directions, representing asymmetric relationships</td>
+                            <td>Web page links, email communication</td>
+                        </tr>
+                        <tr>
+                            <td>Weighted Graph</td>
+                            <td>Edges have associated weights or costs</td>
+                            <td>Road networks with distances, network bandwidth</td>
+                        </tr>
+                        <tr>
+                            <td>Complete Graph</td>
+                            <td>Every vertex is connected to every other vertex</td>
+                            <td>Full mesh network topology</td>
+                        </tr>
+                        <tr>
+                            <td>Bipartite Graph</td>
+                            <td>Vertices can be divided into two disjoint sets where edges only connect vertices in different sets</td>
+                            <td>Students-to-courses assignments, job applicants to positions</td>
+                        </tr>
+                        <tr>
+                            <td>Tree</td>
+                            <td>Connected graph with no cycles</td>
+                            <td>File systems, organization hierarchies</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Graph Representations</h3>
+                <p>There are several ways to represent graphs in computer programs:</p>
+                
+                <h4>1. Adjacency Matrix</h4>
+                <p>A 2D array where cell [i][j] represents the connection between vertices i and j.</p>
+                
+                <pre><code>// Adjacency matrix for a graph with 4 vertices
+// 1 indicates an edge exists, 0 indicates no edge
+
+matrix = [
+    [0, 1, 0, 1],  // Vertex 0 connects to vertices 1 and 3
+    [1, 0, 1, 0],  // Vertex 1 connects to vertices 0 and 2
+    [0, 1, 0, 1],  // Vertex 2 connects to vertices 1 and 3
+    [1, 0, 1, 0]   // Vertex 3 connects to vertices 0 and 2
+]</code></pre>
+                
+                <h4>2. Adjacency List</h4>
+                <p>A collection of lists where each list contains the neighbors of a specific vertex.</p>
+                
+                <pre><code>// Adjacency list for the same graph
+adjacencyList = [
+    [1, 3],  // Vertex 0 connects to vertices 1 and 3
+    [0, 2],  // Vertex 1 connects to vertices 0 and 2
+    [1, 3],  // Vertex 2 connects to vertices 1 and 3
+    [0, 2]   // Vertex 3 connects to vertices 0 and 2
+]</code></pre>
+                
+                <p><strong>Space Complexity Comparison:</strong></p>
+                <ul>
+                    <li>Adjacency Matrix: O(V²) - inefficient for sparse graphs</li>
+                    <li>Adjacency List: O(V + E) - more efficient for sparse graphs</li>
+                </ul>
+                
+                <button class="next-section" onclick="showSection(2)">Continue to Graph Properties</button>
+            </div>
+            
+            <!-- Graph Properties Section -->
+            <div class="section" id="section-2" style="display: none;">
+                <h2>Graph Properties and Paths</h2>
+                <p>Understanding the properties of graphs and the concept of paths is essential for applying graph theory to solve real-world problems.</p>
+                
+                <h3>Important Graph Properties</h3>
+                
+                <h4>Connectivity</h4>
+                <p>A graph is connected if there is a path between every pair of vertices. Connectivity has important implications for network reliability and communication.</p>
+                
+                <div class="image-container">
+                    <img src="23.png" alt="Connected vs disconnected graphs">
+                </div>
+                
+                <p>In a disconnected graph, vertices form separate components that are not reachable from each other.</p>
+                
+                <h4>Degree</h4>
+                <p>The degree of a vertex is the number of edges connected to it.</p>
+                <ul>
+                    <li>In an undirected graph, each vertex has a single degree value.</li>
+                    <li>In a directed graph, vertices have both in-degree (incoming edges) and out-degree (outgoing edges).</li>
+                </ul>
+                
+                <p><strong>Handshaking Theorem:</strong> In any undirected graph, the sum of all vertex degrees equals twice the number of edges (2|E|).</p>
+                
+                <h4>Cycles and Acyclicity</h4>
+                <p>A cycle is a path that starts and ends at the same vertex, with no repeated edges.</p>
+                <ul>
+                    <li>A graph with no cycles is called acyclic.</li>
+                    <li>A directed acyclic graph (DAG) is particularly important in many applications including scheduling, data processing, and dependency resolution.</li>
+                </ul>
+                
+                <h3>Paths and Walks</h3>
+                
+                <p>A path is a sequence of vertices where each adjacent pair is connected by an edge. Paths have several important variations:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Walk</td>
+                            <td>A sequence of vertices and edges (can repeat both vertices and edges)</td>
+                        </tr>
+                        <tr>
+                            <td>Trail</td>
+                            <td>A walk with no repeated edges (can repeat vertices)</td>
+                        </tr>
+                        <tr>
+                            <td>Path</td>
+                            <td>A walk with no repeated vertices or edges</td>
+                        </tr>
+                        <tr>
+                            <td>Cycle</td>
+                            <td>A path that starts and ends at the same vertex</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>Path Length and Distance</h4>
+                <p>The length of a path is typically the number of edges in the path. In a weighted graph, it's the sum of the edge weights.</p>
+                
+                <p>The distance between two vertices is the length of the shortest path between them. If no path exists, the distance is considered infinite.</p>
+                
+                <h3>Special Paths</h3>
+                
+                <h4>Eulerian Path and Circuit</h4>
+                <p>An Eulerian path visits every edge in a graph exactly once. An Eulerian circuit is an Eulerian path that starts and ends at the same vertex.</p>
+                
+                <p>A graph has an Eulerian circuit if and only if:</p>
+                <ul>
+                    <li>All vertices have even degree</li>
+                    <li>The graph is connected (or all vertices with non-zero degree are connected)</li>
+                </ul>
+                
+                <h4>Hamiltonian Path and Circuit</h4>
+                <p>A Hamiltonian path visits every vertex in a graph exactly once. A Hamiltonian circuit is a Hamiltonian path that forms a cycle.</p>
+                
+                <p>Unlike Eulerian paths, there's no simple characterization for when a graph has a Hamiltonian path. Finding a Hamiltonian path is computationally harder (NP-complete).</p>
+                
+                <button class="next-section" onclick="showSection(3)">Continue to Graph Algorithms</button>
+            </div>
+            
+            <!-- Graph Algorithms Section -->
+            <div class="section" id="section-3" style="display: none;">
+                <h2>Graph Traversal and Algorithms</h2>
+                <p>Graph traversal refers to the process of visiting each vertex in a graph. Various algorithms exist for traversing graphs and solving graph-related problems.</p>
+                
+                <h3>Basic Graph Traversal</h3>
+                
+                <h4>1. Depth-First Search (DFS)</h4>
+                <p>DFS explores as far as possible along each branch before backtracking. It uses a stack (often implemented using recursion) to keep track of vertices to be explored.</p>
+                
+                <div class="image-container">
+                    <img src="24.jpg" alt="Depth-First Search illustration">
+                </div>
+                
+                <pre><code>// DFS pseudocode
+function DFS(graph, startVertex):
+    let visited = new Set()
+    
+    function explore(vertex):
+        // Mark vertex as visited
+        visited.add(vertex)
+        
+        // Print or process the current vertex
+        print(vertex)
+        
+        // Visit all adjacent vertices
+        for each neighbor of graph[vertex]:
+            if neighbor not in visited:
+                explore(neighbor)
+    
+    explore(startVertex)
+</code></pre>
+                
+                <p><strong>Applications of DFS:</strong> Topological sorting, cycle detection, path finding, and maze generation.</p>
+                
+                <h4>2. Breadth-First Search (BFS)</h4>
+                <p>BFS explores all neighbors at the present depth before moving on to vertices at the next depth level. It uses a queue to keep track of vertices to be explored.</p>
+                
+                <div class="image-container">
+                    <img src="25.jpg" alt="Breadth-First Search illustration">
+                </div>
+                
+                <pre><code>// BFS pseudocode
+function BFS(graph, startVertex):
+    let visited = new Set()
+    let queue = new Queue()
+    
+    // Mark the start vertex as visited and enqueue it
+    visited.add(startVertex)
+    queue.enqueue(startVertex)
+    
+    while queue is not empty:
+        // Dequeue a vertex from queue
+        let vertex = queue.dequeue()
+        
+        // Print or process the current vertex
+        print(vertex)
+        
+        // Visit all adjacent vertices
+        for each neighbor of graph[vertex]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.enqueue(neighbor)
+</code></pre>
+                
+                <p><strong>Applications of BFS:</strong> Shortest path (unweighted), connected components, and network broadcasting.</p>
+                
+                <h3>Shortest Path Algorithms</h3>
+                
+                <h4>1. Dijkstra's Algorithm</h4>
+                <p>Dijkstra's algorithm finds the shortest path from a single source vertex to all other vertices in a weighted graph with non-negative weights.</p>
+                
+                <pre><code>// Dijkstra's algorithm pseudocode
+function Dijkstra(graph, startVertex):
+    let distances = {}  // Stores shortest distance from start to each vertex
+    let previous = {}   // Stores previous vertex in optimal path
+    let unvisited = new PriorityQueue()
+    
+    // Initialize distances
+    for each vertex v in graph:
+        if v equals startVertex:
+            distances[v] = 0
+        else:
+            distances[v] = INFINITY
+        previous[v] = null
+        unvisited.add(v, distances[v])
+    
+    while unvisited is not empty:
+        // Get vertex with minimum distance
+        let current = unvisited.extractMin()
+        
+        // If we've reached a vertex with infinite distance, 
+        // we've processed all reachable vertices
+        if distances[current] equals INFINITY:
+            break
+        
+        // Check all neighbors of current
+        for each neighbor of graph[current]:
+            let weight = graph.getWeight(current, neighbor)
+            let distanceCandidate = distances[current] + weight
+            
+            // If we found a shorter path to neighbor
+            if distanceCandidate < distances[neighbor]:
+                // Update distance and previous vertex
+                distances[neighbor] = distanceCandidate
+                previous[neighbor] = current
+                unvisited.decreaseKey(neighbor, distanceCandidate)
+    
+    return {distances, previous}
+</code></pre>
+                
+                <h4>2. Bellman-Ford Algorithm</h4>
+                <p>Similar to Dijkstra's, but can handle graphs with negative edge weights. It also detects negative cycles.</p>
+                
+                <h3>Minimum Spanning Tree Algorithms</h3>
+                <p>A minimum spanning tree (MST) is a subset of edges that connects all vertices in a weighted graph while minimizing the total edge weight.</p>
+                
+                <h4>1. Kruskal's Algorithm</h4>
+                <p>Kruskal's algorithm builds the MST by adding edges in ascending order of weight, avoiding cycles.</p>
+                
+                <h4>2. Prim's Algorithm</h4>
+                <p>Prim's algorithm grows the MST one vertex at a time, always adding the lowest-weight edge that connects a vertex in the tree to a vertex outside the tree.</p>
+                
+                <h3>Real-World Applications</h3>
+                <ul>
+                    <li><strong>Social Networks:</strong> Analyzing connections between people</li>
+                    <li><strong>Transportation:</strong> Finding optimal routes and network design</li>
+                    <li><strong>Computer Networks:</strong> Routing algorithms and network topology</li>
+                    <li><strong>Recommendation Systems:</strong> Using graph-based approaches to find similar items</li>
+                    <li><strong>Scheduling:</strong> Using directed acyclic graphs to manage dependencies</li>
+                </ul>
+                
+                <button class="next-section" onclick="completeCourse()">Complete Lesson</button>
+            </div>
+            
+            <!-- Lesson Navigation -->
+            <div class="lesson-navigation">
+                <a href="data_structures.html" class="nav-button">Previous Lesson</a>
+                <a href="computational.html" class="nav-button" id="next-lesson-btn" style="display: none;">Next Lesson: Computational Thinking</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About SmartLearn</h3>
+                <p>An interactive learning platform designed to help students master the mathematical foundations of computer science.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lessons.html">Lessons</a></li>
+                    <li><a href="discussion.html">Discussion</a></li>
+                    <li><a href="quizzes.html">Quizzes</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>Email: info@smartlearn.edu</li>
+                    <li>Phone: (123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Variables to track state
+        let currentSection = 1;
+        let totalSections = 3;
+        
+        // Update progress bar
+        function updateProgress() {
+            const progressPercentage = Math.round((currentSection / totalSections) * 100);
+            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+        }
+        
+        // Show a specific section
+        function showSection(sectionNumber) {
+            // Hide all sections
+            for (let i = 1; i <= totalSections; i++) {
+                document.getElementById('section-' + i).style.display = 'none';
+            }
+            
+            // Show the requested section
+            document.getElementById('section-' + sectionNumber).style.display = 'block';
+            
+            // Update current section
+            currentSection = sectionNumber;
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top of the section
+            window.scrollTo({
+                top: document.querySelector('.lesson-header').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Complete the course
+        function completeCourse() {
+            // Update progress to 100%
+            document.getElementById('progress-percentage').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '100%';
+            
+            // Show completion message
+            alert('Congratulations! You have completed the Introduction to Graph Theory lesson.');
+            
+            // Show the next lesson button
+            document.getElementById('next-lesson-btn').style.display = 'block';
+        }
+        
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - Interactive Quizzes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #34495e;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Page header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        
+        /* Quiz selection */
+        .quiz-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .quiz-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-header {
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .quiz-header h3 {
+            margin-bottom: 5px;
+        }
+        
+        .quiz-info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .quiz-content {
+            padding: 15px;
+        }
+        
+        .quiz-content p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .quiz-footer {
+            border-top: 1px solid #eee;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        
+        .quiz-stats {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .quiz-stats span {
+            margin-right: 10px;
+        }
+        
+        .start-quiz {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .start-quiz:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Active quiz section */
+        .active-quiz {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .quiz-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .quiz-progress {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            width: 20%;
+            border-radius: 5px;
+        }
+        
+        .question-box {
+            margin-bottom: 25px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .options-list {
+            list-style: none;
+        }
+        
+        .option-item {
+            padding: 12px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .option-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .option-item.selected {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .quiz-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .prev-button {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        
+        .next-button {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .submit-button {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .quiz-button:hover {
+            opacity: 0.9;
+        }
+        
+        .feedback-box {
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .correct-feedback {
+            background-color: #d5f5e3;
+            border: 1px solid #2ecc71;
+            color: #27ae60;
+        }
+        
+        .incorrect-feedback {
+            background-color: #fadbd8;
+            border: 1px solid #e74c3c;
+            color: #c0392b;
+        }
+        
+        /* Results section */
+        .quiz-results {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 25px;
+            text-align: center;
+            display: none;
+        }
+        
+        .result-header {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .score-display {
+            font-size: 48px;
+            color: #3498db;
+            margin: 20px 0;
+        }
+        
+        .result-message {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .result-actions {
+            margin-top: 25px;
+        }
+        
+        .result-actions button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .retry-button {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .browse-button {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+            
+            .quiz-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .quiz-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">SmartLearn</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="lessons.html">Lessons</a></li>
+            <li><a href="quizzes.html" class="active">Quizzes</a></li>
+            <li><a href="discussion.html">Discussion</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1>Interactive Quizzes</h1>
+            <p>Test your knowledge and challenge yourself with our interactive quizzes</p>
+        </div>
+        
+        <!-- Quiz Selection Section -->
+        <div class="quiz-selection" id="quiz-selection">
+            <!-- Quiz 1 -->
+            <div class="quiz-card">
+                <div class="quiz-header">
+                    <h3>Binary Number System</h3>
+                    <div class="quiz-info">Number Systems Category</div>
+                </div>
+                <div class="quiz-content">
+                    <p>Test your understanding of binary numbers, conversions, and arithmetic operations.</p>
+                </div>
+                <div class="quiz-footer">
+                    <div class="quiz-stats">
+                        <span>10 Questions</span>
+                        <span>•</span>
+                        <span>78% Avg Score</span>
+                    </div>
+                    <button class="start-quiz"><a href="https://create.kahoot.it/share/number-system-conversions/9fa56df0-9e78-4e01-af63-02a49a098ecf">Start Quiz</a></button>
+                </div>
+            </div>
+            
+            <!-- Quiz 2 -->
+            <div class="quiz-card">
+                <div class="quiz-header" style="background-color: #2ecc71;">
+                    <h3>Logic Gates & Circuits</h3>
+                    <div class="quiz-info">Digital Logic Category</div>
+                </div>
+                <div class="quiz-content">
+                    <p>Challenge yourself with questions about logic gates, truth tables, and simple circuit analysis.</p>
+                </div>
+                <div class="quiz-footer">
+                    <div class="quiz-stats">
+                        <span>10 Questions</span>
+                        <span>•</span>
+                        <span>65% Avg Score</span>
+                    </div>
+                    <button class="start-quiz"><a href="https://create.kahoot.it/share/logic-gates-and-circuits/e4ef8b48-3f06-435e-a027-44637d282966">Start Quiz</a></button>
+                </div>
+            </div>
+            
+            <!-- Quiz 3 -->
+            <div class="quiz-card">
+                <div class="quiz-header" style="background-color: #9b59b6;">
+                    <h3>Algorithm Basics</h3>
+                    <div class="quiz-info">Algorithms Category</div>
+                </div>
+                <div class="quiz-content">
+                    <p>Test your knowledge of algorithm concepts, complexity analysis, and problem-solving approaches.</p>
+                </div>
+                <div class="quiz-footer">
+                    <div class="quiz-stats">
+                        <span>10 Questions</span>
+                        <span>•</span>
+                        <span>72% Avg Score</span>
+                    </div>
+                    <button class="start-quiz"><a href="https://create.kahoot.it/share/algorithm-basics/d35df863-90d0-43e5-9ac7-331d22faca0f">Start Quiz</a></button>
+                </div>
+            </div>
+            
+            <!-- Quiz 4 -->
+            <div class="quiz-card">
+                <div class="quiz-header" style="background-color: #e74c3c;">
+                    <h3>Boolean Algebra</h3>
+                    <div class="quiz-info">Mathematical Foundations Category</div>
+                </div>
+                <div class="quiz-content">
+                    <p>Challenge yourself with Boolean expressions, laws, simplifications, and applications.</p>
+                </div>
+                <div class="quiz-footer">
+                    <div class="quiz-stats">
+                        <span>10 Questions</span>
+                        <span>•</span>
+                        <span>68% Avg Score</span>
+                    </div>
+                    <button class="start-quiz"><a href="https://create.kahoot.it/share/boolean-algebra/9bd2ba5e-7e0d-4573-98ba-722ea37fc801">Start Quiz</a></button>
+                </div>
+            </div>
+            
+            <!-- Quiz 5 -->
+            <div class="quiz-card">
+                <div class="quiz-header" style="background-color: #f39c12;">
+                    <h3>Number System Conversions</h3>
+                    <div class="quiz-info">Number Systems Category</div>
+                </div>
+                <div class="quiz-content">
+                    <p>Practice converting between decimal, binary, octal, and hexadecimal number systems.</p>
+                </div>
+                <div class="quiz-footer">
+                    <div class="quiz-stats">
+                        <span>10 Questions</span>
+                        <span>•</span>
+                        <span>75% Avg Score</span>
+                    </div>
+                    <button class="start-quiz"><a href="https://create.kahoot.it/share/number-system-conversions/9fa56df0-9e78-4e01-af63-02a49a098ecf">Start Quiz</a></button>
+                </div>
+            </div>
+            
+            <!-- Quiz 6 -->
+            <div class="quiz-card">
+                <div class="quiz-header" style="background-color: #16a085;">
+                    <h3>Data Structures</h3>
+                    <div class="quiz-info">Computer Science Basics Category</div>
+                </div>
+                <div class="quiz-content">
+                    <p>Test your understanding of fundamental data structures used in computer science.</p>
+                </div>
+                <div class="quiz-footer">
+                    <div class="quiz-stats">
+                        <span>10 Questions</span>
+                        <span>•</span>
+                        <span>62% Avg Score</span>
+                    </div>
+                    <button class="start-quiz"><a href="https://create.kahoot.it/share/data-structures/8cdf743f-e137-4adf-be0e-bfbf2c6a302d">Start Quiz</a></button>
+                </div>
+            </div>
+        </div>
+        
+       
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About SmartLearn</h3>
+                <p>An interactive learning platform designed to help students master the mathematical foundations of computer science and IT.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lessons.html">Lessons</a></li>
+                    <li><a href="quizzes.html">Quizzes</a></li>
+                    <li><a href="discussion.html">Discussion</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>Email: info@smartlearn.edu</li>
+                    <li>Phone: (123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Quiz functionality
+        function startQuiz(quizId) {
+            // Hide quiz selection
+            document.getElementById('quiz-selection').style.display = 'none';
+            
+            // Show selected quiz (for demo, we'll only show the binary quiz)
+            document.getElementById('binary-quiz').style.display = 'block';
+        }
+        
+        function selectOption(option) {
+            // Remove previous selections
+            const options = document.querySelectorAll('.option-item');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // Select current option
+            option.classList.add('selected');
+            
+            // For demo purposes, show feedback based on selection
+            const correctFeedback = document.getElementById('correct-feedback');
+            const incorrectFeedback = document.getElementById('incorrect-feedback');
+            
+            // Reset feedback
+            correctFeedback.style.display = 'none';
+            incorrectFeedback.style.display = 'none';
+            
+            // Check if answer is correct (hardcoded for demo)
+            if (option.textContent === 'B) 11') {
+                correctFeedback.style.display = 'block';
+            } else {
+                incorrectFeedback.style.display = 'block';
+            }
+        }
+        
+        function nextQuestion() {
+            // For demo, show results after clicking next
+            document.getElementById('binary-quiz').style.display = 'none';
+            document.getElementById('quiz-results').style.display = 'block';
+        }
+        
+        function previousQuestion() {
+            // For demo purposes, this doesn't do anything
+            alert('In a real quiz, this would show the previous question.');
+        }
+        
+        function retryQuiz() {
+            // Return to active quiz
+            document.getElementById('quiz-results').style.display = 'none';
+            document.getElementById('binary-quiz').style.display = 'block';
+        }
+        
+        function browseQuizzes() {
+            // Return to quiz selection
+            document.getElementById('quiz-results').style.display = 'none';
+            document.getElementById('quiz-selection').style.display = 'grid';
+        }
+    </script>
+</body>
+</html>

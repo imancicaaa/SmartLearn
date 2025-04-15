@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - Lessons</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #34495e;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Page header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        
+        /* Lessons grid */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .lesson-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .lesson-image {
+            height: 180px;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .lesson-content {
+            padding: 20px;
+        }
+        
+        .lesson-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .lesson-description {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .lesson-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #95a5a6;
+            font-size: 14px;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .start-button {
+            display: block;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        
+        .start-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Technology tags */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .tech-tag {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+            
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">SmartLearn</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="lessons.html" class="active">Lessons</a></li>
+            <li><a href="quizzes.html">Quizzes</a></li>
+            <li><a href="discussion.html">Discussion</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1>Lessons Page</h1>
+            <p>Explore our interactive lessons on mathematical foundations of computer science</p>
+        </div>
+        
+        <div class="lessons-grid">
+            <!-- Lesson 1 -->
+            <div class="lesson-card">
+                <div class="lesson-image" style="background-image:url('4.jpg'); color: #2c3e50;">
+                    Number Systems
+                </div>
+                <div class="lesson-content">
+                    <h3 class="lesson-title">Number Systems & Boolean Logic</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Binary</span>
+                        <span class="tech-tag">Hexadecimal</span>
+                        <span class="tech-tag">Boolean</span>
+                    </div>
+                    <p class="lesson-description">Learn the fundamentals of different number systems used in computing, including binary and hexadecimal. Explore Boolean logic principles that form the basis of digital systems and computer operations.</p>
+                    <div class="lesson-meta">
+                        <span>4 Interactive Exercises</span>
+                        <span>30 min</span>
+                    </div>
+                    <a href="numbersystem.html" class="start-button">Start Learning</a>
+                </div>
+            </div>
+            
+            <!-- Lesson 2 -->
+            <div class="lesson-card">
+                <div class="lesson-image" style="background-image:url('5.png'); color: #2c3e50;">
+                    Logic Circuits
+                </div>
+                <div class="lesson-content">
+                    <h3 class="lesson-title">Logic Circuits & Digital Design</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">AND/OR Gates</span>
+                        <span class="tech-tag">Flip-Flops</span>
+                        <span class="tech-tag">Circuit Design</span>
+                    </div>
+                    <p class="lesson-description">Discover how logic gates combine to form digital circuits. Learn about sequential and combinational circuits, storage elements, and the principles of designing functional digital systems.</p>
+                    <div class="lesson-meta">
+                        <span>5 Interactive Simulations</span>
+                        <span>45 min</span>
+                    </div>
+                    <a href="logiccircuts.html" class="start-button">Start Learning</a>
+                </div>
+            </div>
+            
+            <!-- Lesson 3 -->
+            <div class="lesson-card">
+                <div class="lesson-image" style="background-image:url('6.jpg'); color: #2c3e50;">
+                    Algorithm Basics
+                </div>
+                <div class="lesson-content">
+                    <h3 class="lesson-title">Algorithmic Thinking & Structures</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Pseudocode</span>
+                        <span class="tech-tag">Flowcharts</span>
+                        <span class="tech-tag">Complexity</span>
+                    </div>
+                    <p class="lesson-description">Develop problem-solving skills through algorithmic thinking. Learn to create structured approaches to solving computational problems, analyze efficiency, and express solutions using pseudocode and flowcharts.</p>
+                    <div class="lesson-meta">
+                        <span>3 Mini-Games</span>
+                        <span>40 min</span>
+                    </div>
+                    <a href="algorithmic.html" class="start-button">Start Learning</a>
+                </div>
+            </div>
+            
+            <!-- Lesson 4 -->
+            <div class="lesson-card">
+                <div class="lesson-image" style="background-image:url('7.jpg'); color: #2c3e50;">
+                </div>
+                <div class="lesson-content">
+                    <h3 class="lesson-title">Data Structures Fundamentals</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Arrays</span>
+                        <span class="tech-tag">Linked Lists</span>
+                        <span class="tech-tag">Trees</span>
+                    </div>
+                    <p class="lesson-description">Explore the essential data structures that organize and store information in computer systems. Learn about arrays, linked lists, trees, and how to select the right structure for different computational tasks.</p>
+                    <div class="lesson-meta">
+                        <span>6 Visualizations</span>
+                        <span>50 min</span>
+                    </div>
+                    <a href="datastructures.html" class="start-button">Start Learning</a>
+                </div>
+            </div>
+            
+            <!-- Lesson 5 -->
+            <div class="lesson-card">
+                <div class="lesson-image" style="background-image:url('8.png'); color: #2c3e50;">
+                    Graph Theory
+                </div>
+                <div class="lesson-content">
+                    <h3 class="lesson-title">Introduction to Graph Theory</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Vertices & Edges</span>
+                        <span class="tech-tag">Paths</span>
+                        <span class="tech-tag">Traversal</span>
+                    </div>
+                    <p class="lesson-description">Understand the mathematical structures used to model pairwise relations between objects. Learn about graph representations, path-finding algorithms, and applications in networks, routing, and social connections.</p>
+                    <div class="lesson-meta">
+                        <span>4 Interactive Problems</span>
+                        <span>35 min</span>
+                    </div>
+                    <a href="graphtheory.html" class="start-button">Start Learning</a>
+                </div>
+            </div>
+            
+            <!-- Lesson 6 -->
+            <div class="lesson-card">
+                <div class="lesson-image" style="background-image:url('9.png'); color: #2c3e50;">
+                    Computational Thinking
+                </div>
+                <div class="lesson-content">
+                    <h3 class="lesson-title">Computational Thinking</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Problem Decomposition</span>
+                        <span class="tech-tag">Pattern Recognition</span>
+                        <span class="tech-tag">Abstraction</span>
+                    </div>
+                    <p class="lesson-description">Master the thought processes used in computer science to formulate and solve problems. Learn to break down complex challenges, identify patterns, create abstractions, and develop algorithmic solutions.</p>
+                    <div class="lesson-meta">
+                        <span>5 Case Studies</span>
+                        <span>45 min</span>
+                    </div>
+                    <a href="computational.html" class="start-button">Start Learning</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About SmartLearn</h3>
+                <p>An interactive learning platform designed to help students master the mathematical foundations of computer science and IT.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lessons.html">Lessons</a></li>
+                    <li><a href="discussion.html">Discussion</a></li>
+                    <li><a href="quizzes.html">Quizzes</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>Email: info@smartlearn.edu</li>
+                    <li>Phone: (123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>

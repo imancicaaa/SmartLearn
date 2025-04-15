@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - Algorithmic Thinking & Structures</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #34495e;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Lesson header */
+        .lesson-header {
+            background-color: white;
+            border-radius: 8px 8px 0 0;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-icon {
+            background-color: #3498db;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .lesson-title-section h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tech-tag {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* Lesson content */
+        .lesson-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .next-section {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .next-section:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Navigation buttons */
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        /* Code blocks */
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        
+        code {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+            
+            .lesson-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .lesson-icon {
+                margin: 0 0 15px 0;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">SmartLearn</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="lessons.html" class="active">Lessons</a></li>
+            <li><a href="quizzes.html">Quizzes</a></li>
+            <li><a href="discussion.html">Discussion</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <div class="lesson-icon">
+                <i>03</i>
+            </div>
+            <div class="lesson-title-section">
+                <h1>Algorithmic Thinking & Structures</h1>
+                <div class="tech-tags">
+                    <span class="tech-tag">Pseudocode</span>
+                    <span class="tech-tag">Flowcharts</span>
+                    <span class="tech-tag">Complexity</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson Content -->
+        <div class="lesson-content">
+            <!-- Introduction Section -->
+            <div class="section" id="section-1">
+                <h2>Introduction to Algorithmic Thinking</h2>
+                <p>Algorithmic thinking is a method of solving problems by developing a precise, step-by-step approach. It's a fundamental skill in computer science and mathematics, enabling us to create efficient solutions to complex problems.</p>
+                
+                <div class="image-container">
+                    <img src="16.png" alt="Algorithmic thinking process diagram">
+                </div>
+                
+                <h3>What is an Algorithm?</h3>
+                <p>An algorithm is a finite sequence of well-defined, computer-implementable instructions to solve a specific problem or perform a computation. Algorithms are:</p>
+                
+                <ul>
+                    <li><strong>Clear and unambiguous</strong>: Each step has a precise meaning.</li>
+                    <li><strong>Finite</strong>: The algorithm must eventually terminate.</li>
+                    <li><strong>Effective</strong>: Each step must be executable and lead toward a solution.</li>
+                    <li><strong>Input-defined</strong>: The algorithm accepts zero or more inputs.</li>
+                    <li><strong>Output-producing</strong>: The algorithm produces one or more outputs.</li>
+                </ul>
+                
+                <h3>Expressing Algorithms</h3>
+                
+                <h4>1. Pseudocode</h4>
+                <p>Pseudocode is a high-level description of an algorithm that uses structural conventions of programming languages but is designed to be read by humans rather than machines. It doesn't adhere to strict syntax rules.</p>
+                
+                <pre><code>ALGORITHM FindMax(numbers)
+    IF length of numbers = 0 THEN
+        RETURN "List is empty"
+    END IF
+    
+    max = numbers[0]
+    
+    FOR i = 1 TO length of numbers - 1 DO
+        IF numbers[i] > max THEN
+            max = numbers[i]
+        END IF
+    END FOR
+    
+    RETURN max
+END ALGORITHM</code></pre>
+                
+                <h4>2. Flowcharts</h4>
+                <p>Flowcharts are graphical representations of algorithms, showing the steps as boxes and their order by connecting them with arrows. They help visualize the flow of control in an algorithm.</p>
+                
+                <div class="image-container">
+                    <img src="/api/placeholder/500/400" alt="Example flowchart for finding maximum value">
+                </div>
+                
+                <button class="next-section" onclick="showSection(2)">Continue to Problem-Solving Strategies</button>
+            </div>
+            
+            <!-- Problem-Solving Strategies Section -->
+            <div class="section" id="section-2" style="display: none;">
+                <h2>Problem-Solving Strategies</h2>
+                <p>Developing algorithmic solutions requires structured approaches to problem-solving. Here are some key strategies:</p>
+                
+                <h3>1. Understand the Problem</h3>
+                <ul>
+                    <li>Clearly define what inputs are given and what outputs are expected</li>
+                    <li>Identify constraints and special cases</li>
+                    <li>Work through examples manually to gain insights</li>
+                </ul>
+                
+                <h3>2. Divide and Conquer</h3>
+                <p>Break complex problems into smaller, more manageable subproblems. Solve each subproblem independently, then combine the solutions.</p>
+                
+                <pre><code>// Example: Merge Sort algorithm uses divide and conquer
+ALGORITHM MergeSort(array)
+    IF length of array <= 1 THEN
+        RETURN array // Base case: already sorted
+    END IF
+    
+    // Divide phase
+    mid = length of array / 2
+    left = MergeSort(array[0...mid-1])
+    right = MergeSort(array[mid...end])
+    
+    // Conquer phase: merge sorted halves
+    RETURN Merge(left, right)
+END ALGORITHM</code></pre>
+                
+                <h3>3. Greedy Strategy</h3>
+                <p>Make the locally optimal choice at each step with the hope of finding a global optimum. Greedy algorithms work well for certain problems but not all.</p>
+                
+                <h4>Example: Making Change</h4>
+                <p>To make change with the fewest coins, always choose the largest denomination that doesn't exceed the remaining amount.</p>
+                
+                <pre><code>ALGORITHM MakeChange(amount, denominations)
+    result = []
+    
+    FOR EACH coin in denominations (sorted largest to smallest) DO
+        WHILE amount >= coin DO
+            Add coin to result
+            amount = amount - coin
+        END WHILE
+    END FOR
+    
+    RETURN result
+END ALGORITHM</code></pre>
+                
+                <h3>4. Dynamic Programming</h3>
+                <p>Solve complex problems by breaking them down into simpler subproblems, solving each subproblem once, and storing the solutions to avoid redundant computation.</p>
+                
+                <h4>Example: Fibonacci Sequence</h4>
+                <p>Instead of recursive calls that duplicate work, store previously calculated values:</p>
+                
+                <pre><code>ALGORITHM Fibonacci(n)
+    IF n ≤ 1 THEN
+        RETURN n
+    END IF
+    
+    // Create array to store calculated values
+    fib = new array of size n+1
+    fib[0] = 0
+    fib[1] = 1
+    
+    FOR i = 2 TO n DO
+        fib[i] = fib[i-1] + fib[i-2]
+    END FOR
+    
+    RETURN fib[n]
+END ALGORITHM</code></pre>
+                
+                <button class="next-section" onclick="showSection(3)">Continue to Algorithm Analysis</button>
+            </div>
+            
+            <!-- Algorithm Analysis Section -->
+            <div class="section" id="section-3" style="display: none;">
+                <h2>Algorithm Analysis and Complexity</h2>
+                <p>Understanding how an algorithm performs is crucial for choosing the right solution to a problem. Algorithm analysis involves measuring the efficiency of an algorithm in terms of time and space requirements.</p>
+                
+                <h3>Time Complexity</h3>
+                <p>Time complexity measures how the runtime of an algorithm grows as the input size increases. We use Big O notation to express this growth rate.</p>
+                
+                <h4>Common Time Complexities:</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Notation</th>
+                            <th>Name</th>
+                            <th>Example</th>
+                            <th>Efficiency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>O(1)</td>
+                            <td>Constant</td>
+                            <td>Array access, hash table lookup</td>
+                            <td>Excellent</td>
+                        </tr>
+                        <tr>
+                            <td>O(log n)</td>
+                            <td>Logarithmic</td>
+                            <td>Binary search, balanced tree operations</td>
+                            <td>Very good</td>
+                        </tr>
+                        <tr>
+                            <td>O(n)</td>
+                            <td>Linear</td>
+                            <td>Linear search, array traversal</td>
+                            <td>Good</td>
+                        </tr>
+                        <tr>
+                            <td>O(n log n)</td>
+                            <td>Linearithmic</td>
+                            <td>Merge sort, quick sort (average case)</td>
+                            <td>Fair</td>
+                        </tr>
+                        <tr>
+                            <td>O(n²)</td>
+                            <td>Quadratic</td>
+                            <td>Bubble sort, insertion sort</td>
+                            <td>Poor for large inputs</td>
+                        </tr>
+                        <tr>
+                            <td>O(2ⁿ)</td>
+                            <td>Exponential</td>
+                            <td>Recursive Fibonacci, Tower of Hanoi</td>
+                            <td>Very poor</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="image-container">
+                    <img src="/api/placeholder/600/350" alt="Graph comparing different time complexity curves">
+                </div>
+                
+                <h3>Space Complexity</h3>
+                <p>Space complexity measures how much memory an algorithm needs as the input size increases. Like time complexity, it's expressed in Big O notation.</p>
+                
+                <p>For example, an algorithm that creates a new array of size n has a space complexity of O(n), while one that only uses a fixed number of variables has O(1) space complexity.</p>
+                
+                <h3>Practical Considerations</h3>
+                <p>When analyzing algorithms, consider:</p>
+                
+                <ul>
+                    <li><strong>Average vs. Worst Case</strong>: Some algorithms perform well on average but poorly in worst cases.</li>
+                    <li><strong>Input Characteristics</strong>: Some algorithms work better with certain data distributions.</li>
+                    <li><strong>Tradeoffs</strong>: Faster algorithms often require more memory, and vice versa.</li>
+                    <li><strong>Constants Matter</strong>: While Big O notation ignores constants, in practice they can be significant for small inputs.</li>
+                </ul>
+                
+                <h3>Optimizing Algorithms</h3>
+                <p>Common techniques for improving algorithm efficiency include:</p>
+                
+                <ul>
+                    <li>Using appropriate data structures</li>
+                    <li>Avoiding redundant calculations</li>
+                    <li>Leveraging problem properties</li>
+                    <li>Trading space for time</li>
+                    <li>Preprocessing input data</li>
+                </ul>
+                
+                <button class="next-section" onclick="completeCourse()">Complete Lesson</button>
+            </div>
+            
+            <!-- Lesson Navigation -->
+            <div class="lesson-navigation">
+                <a href="logiccircuts.html" class="nav-button">Previous Lesson</a>
+                <a href="datastructures.html" class="nav-button" id="next-lesson-btn" style="display: none;">Next Lesson: Data Structures</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About SmartLearn</h3>
+                <p>An interactive learning platform designed to help students master the mathematical foundations of computer science.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lessons.html">Lessons</a></li>
+                    <li><a href="discussion.html">Discussion</a></li>
+                    <li><a href="quizzes.html">Quizzes</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>Email: info@smartlearn.edu</li>
+                    <li>Phone: (123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Variables to track state
+        let currentSection = 1;
+        let totalSections = 3;
+        
+        // Update progress bar
+        function updateProgress() {
+            const progressPercentage = Math.round((currentSection / totalSections) * 100);
+            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+        }
+        
+        // Show a specific section
+        function showSection(sectionNumber) {
+            // Hide all sections
+            for (let i = 1; i <= totalSections; i++) {
+                document.getElementById('section-' + i).style.display = 'none';
+            }
+            
+            // Show the requested section
+            document.getElementById('section-' + sectionNumber).style.display = 'block';
+            
+            // Update current section
+            currentSection = sectionNumber;
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top of the section
+            window.scrollTo({
+                top: document.querySelector('.lesson-header').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Complete the course
+        function completeCourse() {
+            // Update progress to 100%
+            document.getElementById('progress-percentage').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '100%';
+            
+            // Show completion message
+            alert('Congratulations! You have completed the Algorithmic Thinking & Structures lesson.');
+            
+            // Show the next lesson button
+            document.getElementById('next-lesson-btn').style.display = 'block';
+        }
+        
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

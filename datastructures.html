@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - Data Structures Fundamentals</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #34495e;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Lesson header */
+        .lesson-header {
+            background-color: white;
+            border-radius: 8px 8px 0 0;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-icon {
+            background-color: #3498db;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .lesson-title-section h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tech-tag {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* Lesson content */
+        .lesson-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .next-section {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .next-section:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Navigation buttons */
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        /* Code blocks */
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        
+        code {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+            
+            .lesson-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .lesson-icon {
+                margin: 0 0 15px 0;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">SmartLearn</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="lessons.html" class="active">Lessons</a></li>
+            <li><a href="quizzes.html">Quizzes</a></li>
+            <li><a href="discussion.html">Discussion</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <div class="lesson-icon">
+                <i>04</i>
+            </div>
+            <div class="lesson-title-section">
+                <h1>Data Structures Fundamentals</h1>
+                <div class="tech-tags">
+                    <span class="tech-tag">Arrays</span>
+                    <span class="tech-tag">Linked Lists</span>
+                    <span class="tech-tag">Trees</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson Content -->
+        <div class="lesson-content">
+            <!-- Introduction Section -->
+            <div class="section" id="section-1">
+                <h2>Introduction to Data Structures</h2>
+                <p>Data structures are specialized formats for organizing, storing, and manipulating data efficiently. They provide a way to manage large amounts of data for various applications, and the right data structure can significantly impact program performance.</p>
+                
+                <div class="image-container">
+                    <img src="17.png" alt="Overview of common data structures">
+                </div>
+                
+                <h3>Why Data Structures Matter</h3>
+                <p>Data structures are fundamental to computing because they:</p>
+                
+                <ul>
+                    <li><strong>Improve efficiency</strong>: Different data structures offer different time and space trade-offs for operations</li>
+                    <li><strong>Organize data logically</strong>: Making it easier to understand and manipulate</li>
+                    <li><strong>Enable complex operations</strong>: Supporting specialized algorithms and data manipulations</li>
+                    <li><strong>Scale with data volume</strong>: Many data structures are designed to handle large datasets efficiently</li>
+                </ul>
+                
+                <h3>Types of Data Structures</h3>
+                <p>Data structures are commonly classified as:</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Classification</th>
+                            <th>Description</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Linear</td>
+                            <td>Elements arranged in sequential order</td>
+                            <td>Arrays, Linked Lists, Stacks, Queues</td>
+                        </tr>
+                        <tr>
+                            <td>Non-Linear</td>
+                            <td>Elements not arranged sequentially</td>
+                            <td>Trees, Graphs</td>
+                        </tr>
+                        <tr>
+                            <td>Homogeneous</td>
+                            <td>All elements have the same data type</td>
+                            <td>Arrays (in most languages)</td>
+                        </tr>
+                        <tr>
+                            <td>Heterogeneous</td>
+                            <td>Elements can have different data types</td>
+                            <td>Structures/Records</td>
+                        </tr>
+                        <tr>
+                            <td>Static</td>
+                            <td>Fixed size, allocated at compile time</td>
+                            <td>Arrays in C</td>
+                        </tr>
+                        <tr>
+                            <td>Dynamic</td>
+                            <td>Size can change during execution</td>
+                            <td>Linked Lists, Dynamic Arrays</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="next-section" onclick="showSection(2)">Continue to Linear Data Structures</button>
+            </div>
+            
+            <!-- Linear Data Structures Section -->
+            <div class="section" id="section-2" style="display: none;">
+                <h2>Linear Data Structures</h2>
+                <p>Linear data structures arrange data elements sequentially, where each element has a predecessor and successor (except the first and last elements).</p>
+                
+                <h3>1. Arrays</h3>
+                <p>Arrays are the simplest and most widely used data structure. They store elements of the same type in contiguous memory locations.</p>
+                
+                <div class="image-container">
+                    <img src="18.png" alt="Array data structure illustration">
+                </div>
+                
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Random access</strong>: Elements can be accessed directly using an index (O(1) time)</li>
+                    <li><strong>Fixed size</strong>: In many languages, arrays have a fixed size upon creation</li>
+                    <li><strong>Homogeneous</strong>: All elements must be of the same data type</li>
+                    <li><strong>Memory efficient</strong>: Contiguous allocation with minimal overhead</li>
+                </ul>
+                
+                <h4>Array Operations:</h4>
+                <pre><code>// Array operations (pseudocode)
+function accessElement(array, index):
+    return array[index]  // O(1) time complexity
+
+function searchElement(array, value):
+    for i from 0 to array.length - 1:
+        if array[i] == value:
+            return i
+    return -1  // Not found, O(n) time complexity</code></pre>
+                
+                <h3>2. Linked Lists</h3>
+                <p>Linked lists are a dynamic data structure where elements (nodes) are stored at non-contiguous memory locations and connected through references.</p>
+                
+                <div class="image-container">
+                    <img src="19.jpg" alt="Linked list data structure illustration">
+                </div>
+                
+                <h4>Types of Linked Lists:</h4>
+                <ul>
+                    <li><strong>Singly Linked List</strong>: Each node points to the next node</li>
+                    <li><strong>Doubly Linked List</strong>: Each node points to both next and previous nodes</li>
+                    <li><strong>Circular Linked List</strong>: Last node points back to the first node</li>
+                </ul>
+                
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Dynamic size</strong>: Can grow or shrink during execution</li>
+                    <li><strong>Efficient insertions/deletions</strong>: No need to shift elements</li>
+                    <li><strong>Sequential access</strong>: Must traverse from the beginning to access elements</li>
+                    <li><strong>Extra memory</strong>: Requires additional memory for pointers/references</li>
+                </ul>
+                
+                <h4>Linked List Operations:</h4>
+                <pre><code>// Linked List Node (pseudocode)
+class Node:
+    data
+    next = null
+
+// Insertion at the beginning
+function insertAtBeginning(head, value):
+    newNode = new Node()
+    newNode.data = value
+    newNode.next = head
+    return newNode  // New head of the list, O(1) time complexity
+
+// Traversal
+function traverseList(head):
+    current = head
+    while current != null:
+        print(current.data)
+        current = current.next
+    // O(n) time complexity</code></pre>
+                
+                <h3>3. Stacks and Queues</h3>
+                <p>Stacks and queues are abstract data types that can be implemented using arrays or linked lists.</p>
+                
+                <h4>Stack (LIFO - Last In, First Out)</h4>
+                <p>A stack follows the principle of "last in, first out" - like a stack of plates.</p>
+                
+                <pre><code>// Stack operations (pseudocode)
+function push(stack, value):
+    stack[top] = value
+    top = top + 1
+
+function pop(stack):
+    if isEmpty(stack):
+        return "Stack Underflow"
+    top = top - 1
+    return stack[top]
+
+function peek(stack):
+    return stack[top - 1]</code></pre>
+                
+                <h4>Queue (FIFO - First In, First Out)</h4>
+                <p>A queue follows the principle of "first in, first out" - like people waiting in line.</p>
+                
+                <pre><code>// Queue operations (pseudocode)
+function enqueue(queue, value):
+    queue[rear] = value
+    rear = rear + 1
+
+function dequeue(queue):
+    if isEmpty(queue):
+        return "Queue Underflow"
+    value = queue[front]
+    front = front + 1
+    return value</code></pre>
+                
+                <button class="next-section" onclick="showSection(3)">Continue to Non-Linear Data Structures</button>
+            </div>
+            
+            <!-- Non-Linear Data Structures Section -->
+            <div class="section" id="section-3" style="display: none;">
+                <h2>Non-Linear Data Structures</h2>
+                <p>Non-linear data structures don't arrange data in a sequential manner. Instead, they organize data in a hierarchical or network-like structure, allowing more complex relationships between elements.</p>
+                
+                <h3>1. Trees</h3>
+                <p>Trees are hierarchical structures consisting of nodes connected by edges. Each tree has a root node, and every node can have zero or more child nodes.</p>
+                
+                <div class="image-container">
+                    <img src="20.png" alt="Tree data structure illustration">
+                </div>
+                
+                <h4>Key Terminology:</h4>
+                <ul>
+                    <li><strong>Root</strong>: The topmost node of the tree</li>
+                    <li><strong>Parent/Child</strong>: Relationship between connected nodes</li>
+                    <li><strong>Siblings</strong>: Nodes that share the same parent</li>
+                    <li><strong>Leaf</strong>: A node with no children</li>
+                    <li><strong>Height</strong>: The longest path from the root to a leaf</li>
+                    <li><strong>Depth</strong>: The distance from a node to the root</li>
+                </ul>
+                
+                <h4>Common Types of Trees:</h4>
+                
+                <h5>Binary Tree</h5>
+                <p>A tree where each node has at most two children, referred to as left and right children.</p>
+                
+                <h5>Binary Search Tree (BST)</h5>
+                <p>A binary tree with the property that for any node:</p>
+                <ul>
+                    <li>All nodes in the left subtree have values less than the node's value</li>
+                    <li>All nodes in the right subtree have values greater than the node's value</li>
+                </ul>
+                
+                <pre><code>// Binary Search Tree operations (pseudocode)
+class TreeNode:
+    value
+    left = null
+    right = null
+
+function insert(root, value):
+    if root is null:
+        return new TreeNode(value)
+    if value < root.value:
+        root.left = insert(root.left, value)
+    else if value > root.value:
+        root.right = insert(root.right, value)
+    return root
+
+function search(root, value):
+    if root is null or root.value == value:
+        return root
+    if value < root.value:
+        return search(root.left, value)
+    return search(root.right, value)</code></pre>
+                
+                <h5>Balanced Trees</h5>
+                <p>Trees with additional rules to ensure balance (similar heights for all branches), such as AVL trees and Red-Black trees. These provide consistent O(log n) time for operations.</p>
+                
+                <h3>2. Graphs</h3>
+                <p>Graphs are collections of nodes (vertices) connected by edges. They represent relationships between objects and can model complex real-world networks.</p>
+                
+                <div class="image-container">
+                    <img src="21.png" alt="Graph data structure illustration">
+                </div>
+                
+                <h4>Graph Types:</h4>
+                <ul>
+                    <li><strong>Directed vs. Undirected</strong>: In directed graphs, edges have a direction</li>
+                    <li><strong>Weighted vs. Unweighted</strong>: Edges may have associated weights/costs</li>
+                    <li><strong>Connected vs. Disconnected</strong>: Whether all nodes can be reached from any node</li>
+                    <li><strong>Cyclic vs. Acyclic</strong>: Whether the graph contains cycles</li>
+                </ul>
+                
+                <h4>Graph Representations:</h4>
+                <ul>
+                    <li><strong>Adjacency Matrix</strong>: A 2D array where matrix[i][j] indicates an edge between nodes i and j</li>
+                    <li><strong>Adjacency List</strong>: An array of lists where each list contains the neighbors of a vertex</li>
+                </ul>
+                
+                <h4>Common Graph Algorithms:</h4>
+                <ul>
+                    <li><strong>Depth-First Search (DFS)</strong>: Explores as far as possible along each branch before backtracking</li>
+                    <li><strong>Breadth-First Search (BFS)</strong>: Explores all neighbors at the present depth before moving on</li>
+                    <li><strong>Shortest Path Algorithms</strong>: Dijkstra's, Bellman-Ford, Floyd-Warshall</li>
+                    <li><strong>Minimum Spanning Tree</strong>: Prim's and Kruskal's algorithms</li>
+                </ul>
+                
+                <h3>3. Hash Tables</h3>
+                <p>Hash tables (also called hash maps) are data structures that implement an associative array, mapping keys to values using a hash function.</p>
+                
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Fast lookup</strong>: Average O(1) time for search, insert, delete</li>
+                    <li><strong>Key-value pairs</strong>: Data is stored and retrieved using keys</li>
+                    <li><strong>Hash function</strong>: Converts keys to array indices</li>
+                    <li><strong>Collision handling</strong>: Methods to deal with different keys hashing to the same index</li>
+                </ul>
+                
+                <h4>Collision Resolution Techniques:</h4>
+                <ul>
+                    <li><strong>Chaining</strong>: Each bucket contains a linked list of entries</li>
+                    <li><strong>Open Addressing</strong>: Finding another empty slot when a collision occurs (linear probing, quadratic probing, double hashing)</li>
+                </ul>
+                
+                <button class="next-section" onclick="completeCourse()">Complete Lesson</button>
+            </div>
+            
+            <!-- Lesson Navigation -->
+            <div class="lesson-navigation">
+                <a href="algorithmic.html" class="nav-button">Previous Lesson</a>
+                <a href="graphtheory.html" class="nav-button" id="next-lesson-btn" style="display: none;">Next Lesson: Introduction to Graph Theory</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About SmartLearn</h3>
+                <p>An interactive learning platform designed to help students master the mathematical foundations of computer science.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lessons.html">Lessons</a></li>
+                    <li><a href="discussion.html">Discussion</a></li>
+                    <li><a href="quizzes.html">Quizzes</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>Email: info@smartlearn.edu</li>
+                    <li>Phone: (123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Variables to track state
+        let currentSection = 1;
+        let totalSections = 3;
+        
+        // Update progress bar
+        function updateProgress() {
+            const progressPercentage = Math.round((currentSection / totalSections) * 100);
+            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+        }
+        
+        // Show a specific section
+        function showSection(sectionNumber) {
+            // Hide all sections
+            for (let i = 1; i <= totalSections; i++) {
+                document.getElementById('section-' + i).style.display = 'none';
+            }
+            
+            // Show the requested section
+            document.getElementById('section-' + sectionNumber).style.display = 'block';
+            
+            // Update current section
+            currentSection = sectionNumber;
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top of the section
+            window.scrollTo({
+                top: document.querySelector('.lesson-header').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Complete the course
+        function completeCourse() {
+            // Update progress to 100%
+            document.getElementById('progress-percentage').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '100%';
+            
+            // Show completion message
+            alert('Congratulations! You have completed the Data Structures Fundamentals lesson.');
+            
+            // Show the next lesson button
+            document.getElementById('next-lesson-btn').style.display = 'block';
+        }
+        
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

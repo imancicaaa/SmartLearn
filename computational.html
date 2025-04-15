@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - Computational Thinking</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f4f4f4;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #34495e;
+        }
+        
+        /* Main content */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Lesson header */
+        .lesson-header {
+            background-color: white;
+            border-radius: 8px 8px 0 0;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-icon {
+            background-color: #3498db;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .lesson-title-section h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tech-tag {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        /* Lesson content */
+        .lesson-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .next-section {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .next-section:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Navigation buttons */
+        .lesson-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        /* Code blocks */
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: monospace;
+        }
+        
+        code {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Step boxes */
+        .step-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .step-box h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        /* Case study box */
+        .case-study {
+            background-color: #f0f7fb;
+            border: 1px solid #d8eaf6;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .case-study h4 {
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        /* Footer styles */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding: 0 15px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #34495e;
+            padding-top: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .brand {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+            
+            .lesson-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .lesson-icon {
+                margin: 0 0 15px 0;
+            }
+            
+            .lesson-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="brand">SmartLearn</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="lessons.html" class="active">Lessons</a></li>
+            <li><a href="quizzes.html">Quizzes</a></li>
+            <li><a href="discussion.html">Discussion</a></li>
+            <li><a href="about.html">About Us</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Progress</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+        
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <div class="lesson-icon">
+                <i>06</i>
+            </div>
+            <div class="lesson-title-section">
+                <h1>Computational Thinking</h1>
+                <div class="tech-tags">
+                    <span class="tech-tag">Problem Decomposition</span>
+                    <span class="tech-tag">Pattern Recognition</span>
+                    <span class="tech-tag">Abstraction</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson Content -->
+        <div class="lesson-content">
+            <!-- Introduction Section -->
+            <div class="section" id="section-1">
+                <h2>Introduction to Computational Thinking</h2>
+                <p>Computational thinking is a problem-solving approach that draws on concepts fundamental to computer science. It involves breaking down complex problems into smaller, more manageable parts and developing systematic solutions that can be understood by humans and executed by computers.</p>
+                
+                <div class="image-container">
+                    <img src="26.png" alt="Computational thinking process diagram">
+                </div>
+                
+                <h3>What is Computational Thinking?</h3>
+                <p>Computational thinking is not just for computer scientists or programmers. It's a universally applicable thinking skill set that helps solve problems in any field. The term was popularized by Jeannette Wing in 2006, who described it as "thinking like a computer scientist" when approaching problems.</p>
+                
+                <p>At its core, computational thinking involves:</p>
+                <ul>
+                    <li>Analyzing and organizing data logically</li>
+                    <li>Breaking down problems into manageable components</li>
+                    <li>Recognizing patterns and commonalities</li>
+                    <li>Developing step-by-step solutions</li>
+                    <li>Using abstractions to manage complexity</li>
+                </ul>
+                
+                <h3>The Four Pillars of Computational Thinking</h3>
+                <p>Computational thinking is typically broken down into four key components:</p>
+                
+                <div class="step-box">
+                    <h4>1. Decomposition</h4>
+                    <p>Breaking down complex problems into smaller, more manageable parts that are easier to understand and solve.</p>
+                </div>
+                
+                <div class="step-box">
+                    <h4>2. Pattern Recognition</h4>
+                    <p>Identifying similarities or patterns among small, decomposed problems that can help us solve more complex problems more efficiently.</p>
+                </div>
+                
+                <div class="step-box">
+                    <h4>3. Abstraction</h4>
+                    <p>Focusing on the important information only, filtering out what is irrelevant to simplify the problem.</p>
+                </div>
+                
+                <div class="step-box">
+                    <h4>4. Algorithm Design</h4>
+                    <p>Developing a step-by-step solution to the problem, or a set of rules to follow for solving it.</p>
+                </div>
+                
+                <h3>Why Computational Thinking Matters</h3>
+                <p>In our increasingly digital world, computational thinking has become a fundamental skill for:</p>
+                <ul>
+                    <li><strong>Problem-solving in any domain</strong> - from science and mathematics to arts and humanities</li>
+                    <li><strong>Understanding complex systems</strong> - by breaking them down into understandable components</li>
+                    <li><strong>Automating solutions</strong> - creating repeatable processes for similar problems</li>
+                    <li><strong>Data analysis</strong> - organizing and interpreting large amounts of information</li>
+                    <li><strong>Critical thinking</strong> - evaluating solutions systematically</li>
+                </ul>
+                
+                <button class="next-section" onclick="showSection(2)">Continue to Decomposition & Pattern Recognition</button>
+            </div>
+            
+            <!-- Decomposition and Pattern Recognition Section -->
+            <div class="section" id="section-2" style="display: none;">
+                <h2>Decomposition & Pattern Recognition</h2>
+                <p>Let's explore the first two pillars of computational thinking in more depth and see how they work together to solve complex problems.</p>
+                
+                <h3>Decomposition: Breaking Down Problems</h3>
+                <p>Decomposition is the process of breaking down a complex problem into smaller, more manageable sub-problems. This makes the original problem easier to understand and solve.</p>
+                
+                <div class="image-container">
+                    <img src="27.png" alt="Problem decomposition illustration">
+                </div>
+                
+                <h4>Approaches to Decomposition:</h4>
+                <ul>
+                    <li><strong>Functional Decomposition</strong>: Breaking down a process into its component functions or sub-tasks</li>
+                    <li><strong>Object Decomposition</strong>: Breaking down a system into its component objects and their relationships</li>
+                    <li><strong>Data Decomposition</strong>: Breaking down a large dataset into smaller chunks</li>
+                </ul>
+                
+                <div class="case-study">
+                    <h4>Decomposition Example: Planning a Party</h4>
+                    <p>Planning a party is a complex task that can be broken down into manageable sub-tasks:</p>
+                    <ol>
+                        <li>Create guest list</li>
+                        <li>Choose a venue</li>
+                        <li>Plan the menu</li>
+                        <li>Arrange entertainment</li>
+                        <li>Send invitations</li>
+                        <li>Purchase supplies</li>
+                        <li>Set up decorations</li>
+                    </ol>
+                    <p>Each of these sub-tasks can be further decomposed. For example, "Plan the menu" might include: decide on dishes, check for dietary restrictions, source ingredients, and arrange cooking or catering.</p>
+                </div>
+                
+                <h3>Pattern Recognition: Finding Similarities</h3>
+                <p>Pattern recognition involves identifying similarities or common patterns within or between problems. Recognizing patterns helps us:</p>
+                <ul>
+                    <li>Reuse solutions from similar problems</li>
+                    <li>Develop more efficient approaches</li>
+                    <li>Make predictions based on observed patterns</li>
+                    <li>Group related items or concepts</li>
+                </ul>
+                
+                <h4>Types of Patterns in Problem Solving:</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pattern Type</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Similarity</td>
+                            <td>Recognizing when problems have similar structures</td>
+                            <td>Sorting algorithms can be applied to different data types</td>
+                        </tr>
+                        <tr>
+                            <td>Frequency</td>
+                            <td>Identifying recurring elements or events</td>
+                            <td>Analyzing most common user behaviors in an application</td>
+                        </tr>
+                        <tr>
+                            <td>Sequence</td>
+                            <td>Recognizing order or progression</td>
+                            <td>Identifying the steps in a natural process or workflow</td>
+                        </tr>
+                        <tr>
+                            <td>Correlation</td>
+                            <td>Identifying relationships between variables</td>
+                            <td>Recognizing that higher temperatures correlate with increased ice cream sales</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="case-study">
+                    <h4>Pattern Recognition Example: Email Classification</h4>
+                    <p>Consider the task of organizing emails. By recognizing patterns, we can build a system that automatically categorizes emails:</p>
+                    <ul>
+                        <li>Emails with terms like "invoice," "payment," or "receipt" might be financial</li>
+                        <li>Messages from domains ending in .edu might be academic</li>
+                        <li>Emails with "meeting," "agenda," or "schedule" could be work-related</li>
+                        <li>Messages with "discount," "sale," or "offer" might be promotional</li>
+                    </ul>
+                    <p>By identifying these patterns, we can create rules to automatically sort incoming emails into appropriate folders.</p>
+                </div>
+                
+                <h3>Combining Decomposition and Pattern Recognition</h3>
+                <p>These two skills work powerfully together. After breaking down a problem through decomposition, we can look for patterns within and between the sub-problems, often revealing more efficient solutions.</p>
+                
+                <button class="next-section" onclick="showSection(3)">Continue to Abstraction & Algorithms</button>
+            </div>
+            
+            <!-- Abstraction and Algorithms Section -->
+            <div class="section" id="section-3" style="display: none;">
+                <h2>Abstraction & Algorithm Design</h2>
+                <p>The final two pillars of computational thinking - abstraction and algorithm design - help us manage complexity and create systematic solutions to problems.</p>
+                
+                <h3>Abstraction: Managing Complexity</h3>
+                <p>Abstraction involves filtering out unnecessary details and focusing only on the relevant aspects of a problem. It's about identifying what's important and ignoring what's extraneous.</p>
+                
+                <div class="image-container">
+                    <img src="28.png" alt="Abstraction concept illustration">
+                </div>
+                
+                <h4>Levels of Abstraction:</h4>
+                <ul>
+                    <li><strong>Data Abstraction</strong>: Representing complex data in simplified forms (e.g., representing a person as a user object with specific attributes)</li>
+                    <li><strong>Procedural Abstraction</strong>: Hiding implementation details behind simple interfaces (e.g., using a function like "calculateTax()" without needing to know the tax calculation logic)</li>
+                    <li><strong>System Abstraction</strong>: Viewing complex systems at different levels of detail (e.g., seeing a computer as either a collection of applications or as hardware components)</li>
+                </ul>
+                
+                <div class="case-study">
+                    <h4>Abstraction Example: Map Navigation</h4>
+                    <p>A city map is an excellent example of abstraction in daily life:</p>
+                    <ul>
+                        <li>A detailed satellite view shows every building, tree, and car</li>
+                        <li>A standard map abstracts away those details, showing only streets and major landmarks</li>
+                        <li>A public transit map abstracts even further, showing only transit lines and stations</li>
+                        <li>Turn-by-turn directions abstract to just the necessary steps to reach a destination</li>
+                    </ul>
+                    <p>Each level of abstraction serves a different purpose and filters out unnecessary details while preserving essential information.</p>
+                </div>
+                
+                <h3>Algorithm Design: Creating Step-by-Step Solutions</h3>
+                <p>An algorithm is a step-by-step procedure for solving a problem. Algorithm design involves creating clear, precise, and unambiguous instructions that can be followed to complete a task or solve a problem.</p>
+                
+                <h4>Characteristics of Good Algorithms:</h4>
+                <ul>
+                    <li><strong>Finiteness</strong>: The algorithm must terminate after a finite number of steps</li>
+                    <li><strong>Definiteness</strong>: Each step must be precisely defined</li>
+                    <li><strong>Input</strong>: The algorithm should have zero or more inputs</li>
+                    <li><strong>Output</strong>: The algorithm should have one or more outputs</li>
+                    <li><strong>Effectiveness</strong>: The operations must be basic enough to be carried out exactly</li>
+                </ul>
+                
+                <h4>Algorithm Representation:</h4>
+                <p>Algorithms can be represented in various ways:</p>
+                <ul>
+                    <li><strong>Natural language</strong>: Everyday language (like a recipe)</li>
+                    <li><strong>Pseudocode</strong>: A structured, English-like syntax for describing algorithms</li>
+                    <li><strong>Flowcharts</strong>: Visual representations using standardized symbols</li>
+                    <li><strong>Programming languages</strong>: Formal languages with specific syntax and semantics</li>
+                </ul>
+                
+                <div class="case-study">
+                    <h4>Algorithm Example: Making a Sandwich</h4>
+                    <p>Let's see how an everyday task can be expressed as an algorithm in pseudocode:</p>
+                    <pre><code>ALGORITHM MakeSandwich:
+    INPUT: bread, fillings, condiments
+    OUTPUT: completed sandwich
+    
+    1. Place two slices of bread on a clean surface
+    2. IF condiments are available THEN
+        3. Apply condiments to one side of each bread slice
+    4. FOR EACH item in fillings DO
+        5. Place item on top of one bread slice
+    6. Place the second bread slice on top of the fillings, condiment-side down
+    7. IF sandwich needs to be cut THEN
+        8. Cut sandwich in half diagonally
+    9. RETURN completed sandwich
+END ALGORITHM</code></pre>
+                    <p>This algorithm provides clear, step-by-step instructions that can be followed to create a sandwich successfully. Note how it includes decision points (IF statements) and repetition (FOR loop).</p>
+                </div>
+                
+                <h3>Computational Thinking in Practice</h3>
+                <p>When we combine all four pillars of computational thinking, we develop a powerful approach to problem-solving:</p>
+                
+                <ol>
+                    <li><strong>Decompose</strong> the problem into manageable parts</li>
+                    <li><strong>Recognize patterns</strong> in and between those parts</li>
+                    <li><strong>Abstract</strong> away unnecessary details</li>
+                    <li><strong>Design algorithms</strong> to solve each part systematically</li>
+                </ol>
+                
+                <p>This approach can be applied to problems in virtually any domain, from science and engineering to business, arts, and personal life. As you continue to practice these skills, you'll develop a more systematic and effective approach to problem-solving.</p>
+                
+                <button class="next-section" onclick="completeCourse()">Complete Lesson</button>
+            </div>
+            
+            <!-- Lesson Navigation -->
+            <div class="lesson-navigation">
+                <a href="graphtheory.html"nav-button>Previous Lesson</a>
+                <a href="lessons.html" class="nav-button" id="next-lesson-btn" style="display: none;">Back to All Lessons</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About SmartLearn</h3>
+                <p>An interactive learning platform designed to help students master the mathematical foundations of computer science.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lessons.html">Lessons</a></li>
+                    <li><a href="discussion.html">Discussion</a></li>
+                    <li><a href="quizzes.html">Quizzes</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li>Email: info@smartlearn.edu</li>
+                    <li>Phone: (123) 456-7890</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Variables to track state
+        let currentSection = 1;
+        let totalSections = 3;
+        
+        // Update progress bar
+        function updateProgress() {
+            const progressPercentage = Math.round((currentSection / totalSections) * 100);
+            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+        }
+        
+        // Show a specific section
+        function showSection(sectionNumber) {
+            // Hide all sections
+            for (let i = 1; i <= totalSections; i++) {
+                document.getElementById('section-' + i).style.display = 'none';
+            }
+            
+            // Show the requested section
+            document.getElementById('section-' + sectionNumber).style.display = 'block';
+            
+            // Update current section
+            currentSection = sectionNumber;
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top of the section
+            window.scrollTo({
+                top: document.querySelector('.lesson-header').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Complete the course
+        function completeCourse() {
+            // Update progress to 100%
+            document.getElementById('progress-percentage').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '100%';
+            
+            // Show completion message
+            alert('Congratulations! You have completed the Computational Thinking lesson. You have now finished all the lessons in the SmartLearn curriculum!');
+            
+            // Show the next lesson button
+            document.getElementById('next-lesson-btn').style.display = 'block';
+        }
+        
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
