@@ -3,8 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartLearn - Computational Thinking</title>
+    <title>SmartLearn - Basics of Graphical Programming</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
+    <!-- Script must be placed in head to ensure functions are defined before they're called -->
+    <script>
+        // Variables to track state
+        let currentSection = 1;
+        let totalSections = 5;
+        
+        // Update progress bar
+        function updateProgress() {
+            const progressPercentage = Math.round((currentSection / totalSections) * 100);
+            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+        }
+        
+        // Show a specific section
+        function showSection(sectionNumber) {
+            // Hide all sections
+            for (let i = 1; i <= totalSections; i++) {
+                document.getElementById('section-' + i).style.display = 'none';
+            }
+            
+            // Show the requested section
+            document.getElementById('section-' + sectionNumber).style.display = 'block';
+            
+            // Update current section
+            currentSection = sectionNumber;
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top of the section
+            window.scrollTo({
+                top: document.querySelector('.lesson-header').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Complete the course
+        function completeCourse() {
+            // Update progress to 100%
+            document.getElementById('progress-percentage').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '100%';
+            
+            // Show completion message
+            alert('Congratulations! You have completed the Basics of Graphical Programming lesson.');
+            
+            // Show the next lesson button
+            document.getElementById('next-lesson-btn').style.display = 'block';
+        }
+        
+        // Video modal functionality
+        function openVideoModal(videoUrl) {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('videoFrame');
+            
+            // Set the video URL
+            videoFrame.src = videoUrl;
+            
+            // Display the modal
+            modal.style.display = 'block';
+        }
+        
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('videoFrame');
+            
+            // Stop the video by clearing the source
+            videoFrame.src = '';
+            
+            // Hide the modal
+            modal.style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target == modal) {
+                closeVideoModal();
+            }
+        }
+        
+        // Initialize the page
+        window.onload = function() {
+            // Set up initial progress
+            updateProgress();
+            
+            // Add event listeners for video buttons (if any)
+            const videoButtons = document.querySelectorAll('.video-play-button');
+            
+            videoButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Prevent default link behavior
+                    e.preventDefault();
+                    
+                    // Get video URL from href attribute
+                    const videoUrl = this.getAttribute('href');
+                    
+                    // Check if it's a YouTube URL and modify it for embedding
+                    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                        // Extract video ID and create embed URL
+                        let videoId = '';
+                        
+                        if (videoUrl.includes('youtu.be')) {
+                            videoId = videoUrl.split('/').pop().split('?')[0];
+                        } else if (videoUrl.includes('watch?v=')) {
+                            videoId = new URL(videoUrl).searchParams.get('v');
+                        }
+                        
+                        if (videoId) {
+                            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                            openVideoModal(embedUrl);
+                        }
+                    } else {
+                        // For non-YouTube videos, just use the URL as is
+                        openVideoModal(videoUrl);
+                    }
+                });
+            });
+        };
+    </script>
     <style>
         * {
             margin: 0;
@@ -142,7 +261,150 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
-        .next-section {
+        /* Video resources */
+        .video-resources {
+            margin: 30px 0;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .video-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-thumbnail i {
+            font-size: 48px;
+            color: #3498db;
+            position: absolute;
+        }
+        
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-info h3 {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        
+        .video-info p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 0;
+        }
+        
+        .video-play-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .video-play-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Interactive elements */
+        .interactive {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .interactive h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        /* Quiz styles */
+        .quiz-container {
+            margin-top: 20px;
+        }
+        
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+        
+        .quiz-options {
+            list-style: none;
+        }
+        
+        .quiz-option {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .selected {
+            background-color: #3498db !important;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .correct {
+            background-color: #2ecc71 !important;
+            color: white;
+            border-color: #2ecc71;
+        }
+        
+        .incorrect {
+            background-color: #e74c3c !important;
+            color: white;
+            border-color: #e74c3c;
+        }
+        
+        .quiz-submit, .next-section {
             background-color: #3498db;
             color: white;
             border: none;
@@ -154,8 +416,15 @@
             transition: background-color 0.3s;
         }
         
-        .next-section:hover {
+        .quiz-submit:hover, .next-section:hover {
             background-color: #2980b9;
+        }
+        
+        .quiz-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
         }
         
         /* Navigation buttons */
@@ -250,34 +519,6 @@
         
         tr:hover {
             background-color: #f8f9fa;
-        }
-        
-        /* Step boxes */
-        .step-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid #3498db;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 0 5px 5px 0;
-        }
-        
-        .step-box h4 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        /* Case study box */
-        .case-study {
-            background-color: #f0f7fb;
-            border: 1px solid #d8eaf6;
-            border-radius: 5px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .case-study h4 {
-            color: #3498db;
-            margin-bottom: 10px;
         }
         
         /* Footer styles */
@@ -377,6 +618,95 @@
                 width: 100%;
                 text-align: center;
             }
+            
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Modal styles for video player */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: white;
+            z-index: 10;
+            cursor: pointer;
+            background-color: rgba(0,0,0,0.5);
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Code comparison styles */
+        .code-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .code-block {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .code-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+        
+        .code-content {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            padding: 15px;
+            font-family: monospace;
         }
     </style>
 </head>
@@ -412,11 +742,12 @@
                 <i>06</i>
             </div>
             <div class="lesson-title-section">
-                <h1>Computational Thinking</h1>
+                <h1>Basics of Graphical Programming</h1>
                 <div class="tech-tags">
-                    <span class="tech-tag">Problem Decomposition</span>
-                    <span class="tech-tag">Pattern Recognition</span>
-                    <span class="tech-tag">Abstraction</span>
+                    <span class="tech-tag">Scratch</span>
+                    <span class="tech-tag">Blockly</span>
+                    <span class="tech-tag">Visual Coding</span>
+                    <span class="tech-tag">Programming Fundamentals</span>
                 </div>
             </div>
         </div>
@@ -425,246 +756,383 @@
         <div class="lesson-content">
             <!-- Introduction Section -->
             <div class="section" id="section-1">
-                <h2>Introduction to Computational Thinking</h2>
-                <p>Computational thinking is a problem-solving approach that draws on concepts fundamental to computer science. It involves breaking down complex problems into smaller, more manageable parts and developing systematic solutions that can be understood by humans and executed by computers.</p>
+                <h2>What Is Graphical Programming?</h2>
+                <p>Graphical programming is a beginner-friendly way to learn coding using visual elements like blocks instead of typed text. It's especially helpful for younger students or those just starting out, as it allows them to understand programming logic without worrying about syntax errors.</p>
                 
                 <div class="image-container">
-                    <img src="26.png" alt="Computational thinking process diagram">
+                    <img src="43.png" alt="Graphical Programming Example" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
                 </div>
                 
-                <h3>What is Computational Thinking?</h3>
-                <p>Computational thinking is not just for computer scientists or programmers. It's a universally applicable thinking skill set that helps solve problems in any field. The term was popularized by Jeannette Wing in 2006, who described it as "thinking like a computer scientist" when approaching problems.</p>
+                <p>In graphical programming, users drag-and-drop blocks that represent different actions, logic, and control flows. Each block fits together like puzzle pieces to form a sequence or program. This visual approach makes it easier to understand how code components work together.</p>
                 
-                <p>At its core, computational thinking involves:</p>
-                <ul>
-                    <li>Analyzing and organizing data logically</li>
-                    <li>Breaking down problems into manageable components</li>
-                    <li>Recognizing patterns and commonalities</li>
-                    <li>Developing step-by-step solutions</li>
-                    <li>Using abstractions to manage complexity</li>
-                </ul>
-                
-                <h3>The Four Pillars of Computational Thinking</h3>
-                <p>Computational thinking is typically broken down into four key components:</p>
-                
-                <div class="step-box">
-                    <h4>1. Decomposition</h4>
-                    <p>Breaking down complex problems into smaller, more manageable parts that are easier to understand and solve.</p>
-                </div>
-                
-                <div class="step-box">
-                    <h4>2. Pattern Recognition</h4>
-                    <p>Identifying similarities or patterns among small, decomposed problems that can help us solve more complex problems more efficiently.</p>
-                </div>
-                
-                <div class="step-box">
-                    <h4>3. Abstraction</h4>
-                    <p>Focusing on the important information only, filtering out what is irrelevant to simplify the problem.</p>
-                </div>
-                
-                <div class="step-box">
-                    <h4>4. Algorithm Design</h4>
-                    <p>Developing a step-by-step solution to the problem, or a set of rules to follow for solving it.</p>
-                </div>
-                
-                <h3>Why Computational Thinking Matters</h3>
-                <p>In our increasingly digital world, computational thinking has become a fundamental skill for:</p>
-                <ul>
-                    <li><strong>Problem-solving in any domain</strong> - from science and mathematics to arts and humanities</li>
-                    <li><strong>Understanding complex systems</strong> - by breaking them down into understandable components</li>
-                    <li><strong>Automating solutions</strong> - creating repeatable processes for similar problems</li>
-                    <li><strong>Data analysis</strong> - organizing and interpreting large amounts of information</li>
-                    <li><strong>Critical thinking</strong> - evaluating solutions systematically</li>
-                </ul>
-                
-                <button class="next-section" onclick="showSection(2)">Continue to Decomposition & Pattern Recognition</button>
-            </div>
-            
-            <!-- Decomposition and Pattern Recognition Section -->
-            <div class="section" id="section-2" style="display: none;">
-                <h2>Decomposition & Pattern Recognition</h2>
-                <p>Let's explore the first two pillars of computational thinking in more depth and see how they work together to solve complex problems.</p>
-                
-                <h3>Decomposition: Breaking Down Problems</h3>
-                <p>Decomposition is the process of breaking down a complex problem into smaller, more manageable sub-problems. This makes the original problem easier to understand and solve.</p>
-                
-                <div class="image-container">
-                    <img src="27.png" alt="Problem decomposition illustration">
-                </div>
-                
-                <h4>Approaches to Decomposition:</h4>
-                <ul>
-                    <li><strong>Functional Decomposition</strong>: Breaking down a process into its component functions or sub-tasks</li>
-                    <li><strong>Object Decomposition</strong>: Breaking down a system into its component objects and their relationships</li>
-                    <li><strong>Data Decomposition</strong>: Breaking down a large dataset into smaller chunks</li>
-                </ul>
-                
-                <div class="case-study">
-                    <h4>Decomposition Example: Planning a Party</h4>
-                    <p>Planning a party is a complex task that can be broken down into manageable sub-tasks:</p>
-                    <ol>
-                        <li>Create guest list</li>
-                        <li>Choose a venue</li>
-                        <li>Plan the menu</li>
-                        <li>Arrange entertainment</li>
-                        <li>Send invitations</li>
-                        <li>Purchase supplies</li>
-                        <li>Set up decorations</li>
-                    </ol>
-                    <p>Each of these sub-tasks can be further decomposed. For example, "Plan the menu" might include: decide on dishes, check for dietary restrictions, source ingredients, and arrange cooking or catering.</p>
-                </div>
-                
-                <h3>Pattern Recognition: Finding Similarities</h3>
-                <p>Pattern recognition involves identifying similarities or common patterns within or between problems. Recognizing patterns helps us:</p>
-                <ul>
-                    <li>Reuse solutions from similar problems</li>
-                    <li>Develop more efficient approaches</li>
-                    <li>Make predictions based on observed patterns</li>
-                    <li>Group related items or concepts</li>
-                </ul>
-                
-                <h4>Types of Patterns in Problem Solving:</h4>
+                <h3>Popular Graphical Programming Platforms</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Pattern Type</th>
+                            <th>Platform</th>
                             <th>Description</th>
-                            <th>Example</th>
+                            <th>Best For</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Similarity</td>
-                            <td>Recognizing when problems have similar structures</td>
-                            <td>Sorting algorithms can be applied to different data types</td>
+                            <td>Scratch</td>
+                            <td>A fun, colorful platform developed by MIT</td>
+                            <td>Ages 8-16, creative projects, animations, games</td>
                         </tr>
                         <tr>
-                            <td>Frequency</td>
-                            <td>Identifying recurring elements or events</td>
-                            <td>Analyzing most common user behaviors in an application</td>
+                            <td>Blockly</td>
+                            <td>Used by platforms like Code.org and Google</td>
+                            <td>Educational settings, can export to text-based languages</td>
                         </tr>
                         <tr>
-                            <td>Sequence</td>
-                            <td>Recognizing order or progression</td>
-                            <td>Identifying the steps in a natural process or workflow</td>
+                            <td>Tynker</td>
+                            <td>Comprehensive platform with courses and projects</td>
+                            <td>Kids and educators, structured learning paths</td>
                         </tr>
                         <tr>
-                            <td>Correlation</td>
-                            <td>Identifying relationships between variables</td>
-                            <td>Recognizing that higher temperatures correlate with increased ice cream sales</td>
+                            <td>mBlock</td>
+                            <td>Combines Scratch with robotics capabilities</td>
+                            <td>Hardware integration, STEM education</td>
                         </tr>
                     </tbody>
                 </table>
                 
-                <div class="case-study">
-                    <h4>Pattern Recognition Example: Email Classification</h4>
-                    <p>Consider the task of organizing emails. By recognizing patterns, we can build a system that automatically categorizes emails:</p>
-                    <ul>
-                        <li>Emails with terms like "invoice," "payment," or "receipt" might be financial</li>
-                        <li>Messages from domains ending in .edu might be academic</li>
-                        <li>Emails with "meeting," "agenda," or "schedule" could be work-related</li>
-                        <li>Messages with "discount," "sale," or "offer" might be promotional</li>
-                    </ul>
-                    <p>By identifying these patterns, we can create rules to automatically sort incoming emails into appropriate folders.</p>
-                </div>
+                <h3>Benefits of Starting with Graphical Programming</h3>
+                <ul>
+                    <li><strong>No Syntax Errors:</strong> Focus on logic instead of worrying about missing semicolons or brackets</li>
+                    <li><strong>Immediate Visual Feedback:</strong> See results instantly as you build</li>
+                    <li><strong>Reduced Frustration:</strong> Blocks only fit where they make logical sense</li>
+                    <li><strong>Accessible Entry Point:</strong> Lower barrier to entry for programming</li>
+                    <li><strong>Engaging and Fun:</strong> Colorful, interactive interface keeps learners motivated</li>
+                </ul>
                 
-                <h3>Combining Decomposition and Pattern Recognition</h3>
-                <p>These two skills work powerfully together. After breaking down a problem through decomposition, we can look for patterns within and between the sub-problems, often revealing more efficient solutions.</p>
-                
-                <button class="next-section" onclick="showSection(3)">Continue to Abstraction & Algorithms</button>
+                <button class="next-section" onclick="showSection(2)">Continue to Core Programming Concepts</button>
             </div>
             
-            <!-- Abstraction and Algorithms Section -->
-            <div class="section" id="section-3" style="display: none;">
-                <h2>Abstraction & Algorithm Design</h2>
-                <p>The final two pillars of computational thinking - abstraction and algorithm design - help us manage complexity and create systematic solutions to problems.</p>
-                
-                <h3>Abstraction: Managing Complexity</h3>
-                <p>Abstraction involves filtering out unnecessary details and focusing only on the relevant aspects of a problem. It's about identifying what's important and ignoring what's extraneous.</p>
+            <!-- Core Concepts Section -->
+            <div class="section" id="section-2" style="display: none;">
+                <h2>Core Programming Concepts</h2>
+                <p>Even though it's visual, graphical programming teaches the same core concepts as text-based languages. These foundational principles will transfer to any programming language you might learn in the future.</p>
                 
                 <div class="image-container">
-                    <img src="28.png" alt="Abstraction concept illustration">
+                    <img src="44.png" alt="Programming Concepts Illustration" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
                 </div>
                 
-                <h4>Levels of Abstraction:</h4>
-                <ul>
-                    <li><strong>Data Abstraction</strong>: Representing complex data in simplified forms (e.g., representing a person as a user object with specific attributes)</li>
-                    <li><strong>Procedural Abstraction</strong>: Hiding implementation details behind simple interfaces (e.g., using a function like "calculateTax()" without needing to know the tax calculation logic)</li>
-                    <li><strong>System Abstraction</strong>: Viewing complex systems at different levels of detail (e.g., seeing a computer as either a collection of applications or as hardware components)</li>
-                </ul>
+                <h3>Fundamental Concepts in Graphical Programming</h3>
                 
-                <div class="case-study">
-                    <h4>Abstraction Example: Map Navigation</h4>
-                    <p>A city map is an excellent example of abstraction in daily life:</p>
-                    <ul>
-                        <li>A detailed satellite view shows every building, tree, and car</li>
-                        <li>A standard map abstracts away those details, showing only streets and major landmarks</li>
-                        <li>A public transit map abstracts even further, showing only transit lines and stations</li>
-                        <li>Turn-by-turn directions abstract to just the necessary steps to reach a destination</li>
-                    </ul>
-                    <p>Each level of abstraction serves a different purpose and filters out unnecessary details while preserving essential information.</p>
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-title">Sequence</div>
+                        <div class="code-content">
+                            <p><strong>In Graphical Form:</strong><br>
+                            - Move sprite 10 steps<br>
+                            - Turn 90 degrees<br>
+                            - Play sound</p>
+                            
+                            <p><strong>Concept:</strong> Actions are performed in order, from top to bottom</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title">Loops</div>
+                        <div class="code-content">
+                            <p><strong>In Graphical Form:</strong><br>
+                            - "Repeat 10 times" block<br>
+                            - "Forever" loop block<br>
+                            - "Repeat until" condition block</p>
+                            
+                            <p><strong>Equivalent:</strong> for loops, while loops, do-while loops</p>
+                        </div>
+                    </div>
                 </div>
                 
-                <h3>Algorithm Design: Creating Step-by-Step Solutions</h3>
-                <p>An algorithm is a step-by-step procedure for solving a problem. Algorithm design involves creating clear, precise, and unambiguous instructions that can be followed to complete a task or solve a problem.</p>
-                
-                <h4>Characteristics of Good Algorithms:</h4>
-                <ul>
-                    <li><strong>Finiteness</strong>: The algorithm must terminate after a finite number of steps</li>
-                    <li><strong>Definiteness</strong>: Each step must be precisely defined</li>
-                    <li><strong>Input</strong>: The algorithm should have zero or more inputs</li>
-                    <li><strong>Output</strong>: The algorithm should have one or more outputs</li>
-                    <li><strong>Effectiveness</strong>: The operations must be basic enough to be carried out exactly</li>
-                </ul>
-                
-                <h4>Algorithm Representation:</h4>
-                <p>Algorithms can be represented in various ways:</p>
-                <ul>
-                    <li><strong>Natural language</strong>: Everyday language (like a recipe)</li>
-                    <li><strong>Pseudocode</strong>: A structured, English-like syntax for describing algorithms</li>
-                    <li><strong>Flowcharts</strong>: Visual representations using standardized symbols</li>
-                    <li><strong>Programming languages</strong>: Formal languages with specific syntax and semantics</li>
-                </ul>
-                
-                <div class="case-study">
-                    <h4>Algorithm Example: Making a Sandwich</h4>
-                    <p>Let's see how an everyday task can be expressed as an algorithm in pseudocode:</p>
-                    <pre><code>ALGORITHM MakeSandwich:
-    INPUT: bread, fillings, condiments
-    OUTPUT: completed sandwich
-    
-    1. Place two slices of bread on a clean surface
-    2. IF condiments are available THEN
-        3. Apply condiments to one side of each bread slice
-    4. FOR EACH item in fillings DO
-        5. Place item on top of one bread slice
-    6. Place the second bread slice on top of the fillings, condiment-side down
-    7. IF sandwich needs to be cut THEN
-        8. Cut sandwich in half diagonally
-    9. RETURN completed sandwich
-END ALGORITHM</code></pre>
-                    <p>This algorithm provides clear, step-by-step instructions that can be followed to create a sandwich successfully. Note how it includes decision points (IF statements) and repetition (FOR loop).</p>
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-title">Conditionals</div>
+                        <div class="code-content">
+                            <p><strong>In Graphical Form:</strong><br>
+                            - "If... then..." blocks<br>
+                            - "If... then... else..." blocks<br>
+                            - "Wait until" condition blocks</p>
+                            
+                            <p><strong>Equivalent:</strong> if statements, if-else statements, switch cases</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title">Variables</div>
+                        <div class="code-content">
+                            <p><strong>In Graphical Form:</strong><br>
+                            - "Make a variable" feature<br>
+                            - "Set variable to" blocks<br>
+                            - "Change variable by" blocks</p>
+                            
+                            <p><strong>Equivalent:</strong> Variable declaration, assignment, modification</p>
+                        </div>
+                    </div>
                 </div>
                 
-                <h3>Computational Thinking in Practice</h3>
-                <p>When we combine all four pillars of computational thinking, we develop a powerful approach to problem-solving:</p>
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-title">Events</div>
+                        <div class="code-content">
+                            <p><strong>In Graphical Form:</strong><br>
+                            - "When flag clicked" blocks<br>
+                            - "When key pressed" blocks<br>
+                            - "When sprite clicked" blocks</p>
+                            
+                            <p><strong>Equivalent:</strong> Event listeners, trigger functions, callbacks</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title">Functions</div>
+                        <div class="code-content">
+                            <p><strong>In Graphical Form:</strong><br>
+                            - "Define new block" feature<br>
+                            - Custom block creation<br>
+                            - "Run block" with parameters</p>
+                            
+                            <p><strong>Equivalent:</strong> Function definitions, function calls, parameters</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Text Code Comparisons</h3>
+                <p>Here's how some graphical programming blocks would look in Python code:</p>
+                
+                <pre><code>// Graphical Block: "Repeat 10 times: Move 10 steps"
+// Python equivalent:
+for i in range(10):
+    move(10)
+
+// Graphical Block: "If touching edge, bounce"
+// Python equivalent:
+if touching_edge():
+    bounce()
+
+// Graphical Block: "When green flag clicked"
+// JavaScript equivalent:
+function onStart() {
+    // start program
+}
+</code></pre>
+                
+                <button class="next-section" onclick="showSection(3)">Continue to Building Projects</button>
+            </div>
+            
+            <!-- Building Projects Section -->
+            <div class="section" id="section-3" style="display: none;">
+                <h2>Building Projects in Graphical Programming</h2>
+                <p>One of the best ways to learn programming is by creating projects. Let's explore how to build a simple game using graphical programming concepts.</p>
+                
+                <div class="image-container">
+                    <img src="45.png" alt="Simple Game Example" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
+                </div>
+                
+                <h3>Example: Simple Game in Scratch</h3>
+                <p>Here's how you might build a basic game where a sprite collects coins:</p>
                 
                 <ol>
-                    <li><strong>Decompose</strong> the problem into manageable parts</li>
-                    <li><strong>Recognize patterns</strong> in and between those parts</li>
-                    <li><strong>Abstract</strong> away unnecessary details</li>
-                    <li><strong>Design algorithms</strong> to solve each part systematically</li>
+                    <li><strong>Player Movement:</strong> Sprite moves with arrow keys</li>
+                    <li><strong>Objective:</strong> Score increases when the sprite touches a coin</li>
+                    <li><strong>Challenge:</strong> Game ends when time runs out</li>
                 </ol>
                 
-                <p>This approach can be applied to problems in virtually any domain, from science and engineering to business, arts, and personal life. As you continue to practice these skills, you'll develop a more systematic and effective approach to problem-solving.</p>
+                <p>This simple game demonstrates real programming logic including input processing, state tracking, and event handling.</p>
+                
+                <h3>Broadcasting and Communication</h3>
+                <p>In graphical programming, different parts of your program can communicate with each other. This is similar to how components interact in more advanced programming.</p>
+                
+                <div class="interactive">
+                    <h3>Broadcasting Example</h3>
+                    <ul>
+                        <li>One sprite can broadcast a message like "Game Over"</li>
+                        <li>Other sprites can listen for this message with blocks like "When I receive [Game Over]"</li>
+                        <li>This triggers actions like switching to an end screen</li>
+                    </ul>
+                    <p>This concept introduces inter-process communication and event-driven programming.</p>
+                </div>
+                
+                <h3>Parallel Execution</h3>
+                <p>Multiple scripts (or sprites) can run at the same time, just like in real programs:</p>
+                <ul>
+                    <li>One sprite controls player movement</li>
+                    <li>Another sprite manages score tracking</li>
+                    <li>A third sprite might handle background music</li>
+                </ul>
+                <p>This parallel execution teaches concepts related to threading and concurrent programming.</p>
+                
+                <button class="next-section" onclick="showSection(4)">Continue to Animation and Interactions</button>
+            </div>
+            
+            <!-- Animation and Interactions Section -->
+            <div class="section" id="section-4" style="display: none;">
+                <h2>Animation and User Interactions</h2>
+                <p>Graphical programming environments make it easy to create animations and respond to user input, teaching important programming concepts in an engaging way.</p>
+                
+                <div class="image-container">
+                    <img src="46.jpg" alt="Animation Example" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
+                </div>
+                
+                <h3>Costumes and Animations</h3>
+                <p>Sprites can have multiple costumes (images) that they switch between to create animations:</p>
+                <ul>
+                    <li><strong>Walk Cycles:</strong> Alternating between different poses to simulate walking</li>
+                    <li><strong>Blinking Animations:</strong> Switching between open and closed eyes</li>
+                    <li><strong>Background Changes:</strong> Transitioning between different scenes</li>
+                </ul>
+                <p>This teaches concepts related to frame-based animation, state management, and timing logic.</p>
+                
+                <h3>User Inputs</h3>
+                <p>Graphical programs respond to various types of user input:</p>
+                
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-title">Keyboard Input</div>
+                        <div class="code-content">
+                            <p><strong>Example Block:</strong><br>
+                            "When space key pressed → jump"</p>
+                            
+                            <p><strong>Teaches:</strong> Event-driven programming, input handling</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title">Mouse Input</div>
+                        <div class="code-content">
+                            <p><strong>Example Block:</strong><br>
+                            "When sprite clicked → play sound"</p>
+                            
+                            <p><strong>Teaches:</strong> User interaction, event processing</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Debugging Skills</h3>
+                <p>Working with graphical programming develops important debugging skills:</p>
+                <ul>
+                    <li><strong>Problem Identification:</strong> Recognizing when a sprite isn't behaving as expected</li>
+                    <li><strong>Logical Thinking:</strong> Following the flow of blocks to find issues</li>
+                    <li><strong>Testing:</strong> Running programs repeatedly to check fixes</li>
+                    <li><strong>Incremental Development:</strong> Building and testing small pieces at a time</li>
+                </ul>
+                <p>These critical thinking and problem-solving skills transfer directly to text-based programming.</p>
+                
+                <div class="interactive">
+                    <h3>Try It Yourself: Debug Challenge</h3>
+                    <p>What's wrong with this logic?</p>
+                    <pre><code>When green flag clicked
+Set score to 0
+Forever
+    If key [right arrow] pressed
+        Move 10 steps
+    If touching [coin]
+        Change score by 1</code></pre>
+                    <p><em>Think about it: Will the score increase once or multiple times when touching a coin?</em></p>
+                </div>
+                
+                <button class="next-section" onclick="showSection(5)">Continue to Transition to Text Coding</button>
+            </div>
+            
+            <!-- Transition Section -->
+            <div class="section" id="section-5" style="display: none;">
+                <h2>From Blocks to Real Code</h2>
+                <p>Graphical programming serves as an excellent stepping stone to text-based languages like Python, JavaScript, or Java. The concepts you learn with blocks transfer directly to these languages.</p>
+                
+                <div class="image-container">
+                    <img src="47.png" alt="Transition to Text Coding" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
+                </div>
+                
+                <h3>Code Translation Examples</h3>
+                
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-title">Scratch Block</div>
+                        <div class="code-content">
+                            <p>If &lt;score &gt; 10&gt; then<br>
+                            &nbsp;&nbsp;Say [You win!]<br>
+                            End</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title">Python Code</div>
+                        <div class="code-content">
+                            <p>if score > 10:<br>
+                            &nbsp;&nbsp;print("You win!")</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-comparison">
+                    <div class="code-block">
+                        <div class="code-title">Scratch Block</div>
+                        <div class="code-content">
+                            <p>Repeat (10) times<br>
+                            &nbsp;&nbsp;Move (10) steps<br>
+                            &nbsp;&nbsp;Turn (36) degrees<br>
+                            End</p>
+                        </div>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-title">JavaScript Code</div>
+                        <div class="code-content">
+                            <p>for (let i = 0; i < 10; i++) {<br>
+                            &nbsp;&nbsp;move(10);<br>
+                            &nbsp;&nbsp;turn(36);<br>
+                            }</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3>Benefits of Learning Path</h3>
+                <ul>
+                    <li><strong>Conceptual Foundation:</strong> Understanding programming logic before syntax</li>
+                    <li><strong>Confidence Building:</strong> Success with visual programming builds confidence</li>
+                    <li><strong>Smooth Transition:</strong> Many platforms offer ways to see the text code behind blocks</li>
+                    <li><strong>Motivation:</strong> Seeing what you can create drives continued learning</li>
+                </ul>
+                
+                <h3>Motivation Through Gamification</h3>
+                <p>Most graphical programming platforms include gamification elements that keep students engaged:</p>
+                <ul>
+                    <li><strong>Badges:</strong> Earn recognition for completing challenges</li>
+                    <li><strong>Progressive Challenges:</strong> Gradually increasing difficulty levels</li>
+                    <li><strong>Project Galleries:</strong> Showcase creations and get inspired by others</li>
+                    <li><strong>Community Features:</strong> Collaborate, share, and learn from peers</li>
+                </ul>
+                
+                <div class="interactive">
+                    <h3>Next Steps in Your Programming Journey</h3>
+                    <ol>
+                        <li>Start with a graphical platform like Scratch or Blockly</li>
+                        <li>Create simple projects, then increase complexity</li>
+                        <li>Explore platforms that show both blocks and text code side by side</li>
+                        <li>Gradually transition to beginner-friendly text languages like Python</li>
+                        <li>Apply the programming concepts you've learned in new contexts</li>
+                    </ol>
+                </div>
                 
                 <button class="next-section" onclick="completeCourse()">Complete Lesson</button>
             </div>
             
             <!-- Lesson Navigation -->
             <div class="lesson-navigation">
-                <a href="graphtheory.html"nav-button>Previous Lesson</a>
-                <a href="lessons.html" class="nav-button" id="next-lesson-btn" style="display: none;">Back to All Lessons</a>
+                <a href="graphtheory.html" class="nav-button">Previous Lesson</a>
+                <a href="lessons.html" class="nav-button" id="next-lesson-btn" style="display: none;">Go to lessons library</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideoModal()">&times;</span>
+            <div class="video-container">
+                <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -690,8 +1158,7 @@ END ALGORITHM</code></pre>
             <div class="footer-section">
                 <h3>Contact Us</h3>
                 <ul class="footer-links">
-                    <li>Email: iman.karahmetovic@2gimnazija.edu.ba/li>
-                   
+                    <li>Email: iman.karahmetovic@2gimnazija.edu.ba</li>
                 </ul>
             </div>
         </div>
@@ -700,57 +1167,3 @@ END ALGORITHM</code></pre>
             <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
         </div>
     </footer>
-    
-    <script>
-        // Variables to track state
-        let currentSection = 1;
-        let totalSections = 3;
-        
-        // Update progress bar
-        function updateProgress() {
-            const progressPercentage = Math.round((currentSection / totalSections) * 100);
-            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
-            document.getElementById('progress-fill').style.width = progressPercentage + '%';
-        }
-        
-        // Show a specific section
-        function showSection(sectionNumber) {
-            // Hide all sections
-            for (let i = 1; i <= totalSections; i++) {
-                document.getElementById('section-' + i).style.display = 'none';
-            }
-            
-            // Show the requested section
-            document.getElementById('section-' + sectionNumber).style.display = 'block';
-            
-            // Update current section
-            currentSection = sectionNumber;
-            
-            // Update progress
-            updateProgress();
-            
-            // Scroll to top of the section
-            window.scrollTo({
-                top: document.querySelector('.lesson-header').offsetTop,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Complete the course
-        function completeCourse() {
-            // Update progress to 100%
-            document.getElementById('progress-percentage').textContent = '100%';
-            document.getElementById('progress-fill').style.width = '100%';
-            
-            // Show completion message
-            alert('Congratulations! You have completed the Computational Thinking lesson. You have now finished all the lessons in the SmartLearn curriculum!');
-            
-            // Show the next lesson button
-            document.getElementById('next-lesson-btn').style.display = 'block';
-        }
-        
-        // Initialize
-        updateProgress();
-    </script>
-</body>
-</html>

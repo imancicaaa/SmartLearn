@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartLearn - Introduction to Graph Theory</title>
+    <title>SmartLearn - Introduction to Computer Networks</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
     <style>
         * {
@@ -142,7 +142,150 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
-        .next-section {
+        /* Video resources */
+        .video-resources {
+            margin: 30px 0;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .video-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-thumbnail i {
+            font-size: 48px;
+            color: #3498db;
+            position: absolute;
+        }
+        
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-info h3 {
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        
+        .video-info p {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 0;
+        }
+        
+        .video-play-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .video-play-button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Interactive elements */
+        .interactive {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .interactive h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        /* Quiz styles */
+        .quiz-container {
+            margin-top: 20px;
+        }
+        
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+        
+        .quiz-options {
+            list-style: none;
+        }
+        
+        .quiz-option {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .selected {
+            background-color: #3498db !important;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .correct {
+            background-color: #2ecc71 !important;
+            color: white;
+            border-color: #2ecc71;
+        }
+        
+        .incorrect {
+            background-color: #e74c3c !important;
+            color: white;
+            border-color: #e74c3c;
+        }
+        
+        .quiz-submit, .next-section {
             background-color: #3498db;
             color: white;
             border: none;
@@ -154,8 +297,15 @@
             transition: background-color 0.3s;
         }
         
-        .next-section:hover {
+        .quiz-submit:hover, .next-section:hover {
             background-color: #2980b9;
+        }
+        
+        .quiz-result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
         }
         
         /* Navigation buttons */
@@ -349,6 +499,65 @@
                 width: 100%;
                 text-align: center;
             }
+            
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Modal styles for video player */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: white;
+            z-index: 10;
+            cursor: pointer;
+            background-color: rgba(0,0,0,0.5);
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
@@ -384,11 +593,12 @@
                 <i>05</i>
             </div>
             <div class="lesson-title-section">
-                <h1>Introduction to Graph Theory</h1>
+                <h1>Introduction to Computer Networks</h1>
                 <div class="tech-tags">
-                    <span class="tech-tag">Vertices & Edges</span>
-                    <span class="tech-tag">Paths</span>
-                    <span class="tech-tag">Traversal</span>
+                    <span class="tech-tag">Networks</span>
+                    <span class="tech-tag">LAN</span>
+                    <span class="tech-tag">WAN</span>
+                    <span class="tech-tag">TCP/IP</span>
                 </div>
             </div>
         </div>
@@ -397,25 +607,48 @@
         <div class="lesson-content">
             <!-- Introduction Section -->
             <div class="section" id="section-1">
-                <h2>Graph Theory Fundamentals</h2>
-                <p>Graph theory is a branch of mathematics that studies the relationships between objects. Graphs are mathematical structures used to model pairwise relations between objects and are one of the most versatile tools in computer science and mathematics.</p>
+                <h2>What is a Computer Network?</h2>
+                <p>A computer network is a group of interconnected devices that can share data, resources, and services. These devices, known as nodes, include computers, printers, phones, servers, and more. Networks help us send emails, access websites, share files, stream videos, and communicate globally.</p>
                 
                 <div class="image-container">
-                    <img src="22.png" alt="Basic graph with vertices and edges">
+                    <img src="40.jpg" alt="Computer Network Illustration" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
                 </div>
                 
-                <h3>Basic Graph Terminology</h3>
+                <h3>Key Network Characteristics</h3>
+                <p>Computer networks have several important characteristics that define how they operate:</p>
                 
-                <p>A graph G consists of:</p>
                 <ul>
-                    <li><strong>Vertices (V)</strong>: Also called nodes, these are the fundamental units of a graph.</li>
-                    <li><strong>Edges (E)</strong>: Connections between pairs of vertices, representing relationships.</li>
+                    <li><strong>Connectivity:</strong> Allows devices to communicate with each other</li>
+                    <li><strong>Resource Sharing:</strong> Enables sharing of files, printers, and other resources</li>
+                    <li><strong>Communication:</strong> Facilitates the exchange of information</li>
+                    <li><strong>Scalability:</strong> Can be expanded to include more devices</li>
+                    <li><strong>Reliability:</strong> Provides redundancy to ensure consistent operation</li>
                 </ul>
                 
-                <p>Mathematically, a graph G is represented as G = (V, E), where V is a set of vertices and E is a set of edges.</p>
+                <h3>Importance of Computer Networks</h3>
+                <p>Computer networks are fundamental to modern technology and society in many ways:</p>
                 
-                <h3>Types of Graphs</h3>
+                <ul>
+                    <li><strong>Information Sharing:</strong> Networks allow for quick and efficient exchange of information</li>
+                    <li><strong>Resource Utilization:</strong> They enable optimal use of hardware and software resources</li>
+                    <li><strong>Reliability:</strong> Networks can provide redundancy to ensure data availability</li>
+                    <li><strong>Cost Efficiency:</strong> Sharing resources over a network can reduce hardware and software costs</li>
+                    <li><strong>Communication:</strong> They enable various forms of communication like email, messaging, and video calls</li>
+                </ul>
                 
+                <button class="next-section" onclick="showSection(2)">Continue to Types of Networks</button>
+            </div>
+            
+            <!-- Types of Networks Section -->
+            <div class="section" id="section-2" style="display: none;">
+                <h2>Types of Networks</h2>
+                <p>Computer networks come in various sizes and configurations, each designed for specific purposes and environments. Here are the main types:</p>
+                
+                <div class="image-container">
+                    <img src="41.jpg" alt="Network Types Illustration" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
+                </div>
+                
+                <h3>Network Classifications by Size and Scope</h3>
                 <table>
                     <thead>
                         <tr>
@@ -426,300 +659,210 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Undirected Graph</td>
-                            <td>Edges have no direction, representing symmetric relationships</td>
-                            <td>Friendship networks, road connections</td>
+                            <td>LAN (Local Area Network)</td>
+                            <td>A network within a small area like a home, school, or office</td>
+                            <td>Your school's computer lab</td>
                         </tr>
                         <tr>
-                            <td>Directed Graph (Digraph)</td>
-                            <td>Edges have directions, representing asymmetric relationships</td>
-                            <td>Web page links, email communication</td>
+                            <td>WAN (Wide Area Network)</td>
+                            <td>Covers a large area, often made up of multiple LANs</td>
+                            <td>The internet</td>
                         </tr>
                         <tr>
-                            <td>Weighted Graph</td>
-                            <td>Edges have associated weights or costs</td>
-                            <td>Road networks with distances, network bandwidth</td>
+                            <td>WLAN (Wireless LAN)</td>
+                            <td>A LAN that uses wireless connections</td>
+                            <td>Wi-Fi at a coffee shop</td>
                         </tr>
                         <tr>
-                            <td>Complete Graph</td>
-                            <td>Every vertex is connected to every other vertex</td>
-                            <td>Full mesh network topology</td>
+                            <td>PAN (Personal Area Network)</td>
+                            <td>Very small, used for one person's devices</td>
+                            <td>Bluetooth between phone and smartwatch</td>
                         </tr>
                         <tr>
-                            <td>Bipartite Graph</td>
-                            <td>Vertices can be divided into two disjoint sets where edges only connect vertices in different sets</td>
-                            <td>Students-to-courses assignments, job applicants to positions</td>
-                        </tr>
-                        <tr>
-                            <td>Tree</td>
-                            <td>Connected graph with no cycles</td>
-                            <td>File systems, organization hierarchies</td>
+                            <td>MAN (Metropolitan Area Network)</td>
+                            <td>Covers a city or campus area</td>
+                            <td>City-wide Wi-Fi or cable network</td>
                         </tr>
                     </tbody>
                 </table>
                 
-                <h3>Graph Representations</h3>
-                <p>There are several ways to represent graphs in computer programs:</p>
+                <h3>Network Topologies</h3>
+                <p>Topology refers to how devices are arranged in a network. Some common types:</p>
                 
-                <h4>1. Adjacency Matrix</h4>
-                <p>A 2D array where cell [i][j] represents the connection between vertices i and j.</p>
-                
-                <pre><code>// Adjacency matrix for a graph with 4 vertices
-// 1 indicates an edge exists, 0 indicates no edge
-
-matrix = [
-    [0, 1, 0, 1],  // Vertex 0 connects to vertices 1 and 3
-    [1, 0, 1, 0],  // Vertex 1 connects to vertices 0 and 2
-    [0, 1, 0, 1],  // Vertex 2 connects to vertices 1 and 3
-    [1, 0, 1, 0]   // Vertex 3 connects to vertices 0 and 2
-]</code></pre>
-                
-                <h4>2. Adjacency List</h4>
-                <p>A collection of lists where each list contains the neighbors of a specific vertex.</p>
-                
-                <pre><code>// Adjacency list for the same graph
-adjacencyList = [
-    [1, 3],  // Vertex 0 connects to vertices 1 and 3
-    [0, 2],  // Vertex 1 connects to vertices 0 and 2
-    [1, 3],  // Vertex 2 connects to vertices 1 and 3
-    [0, 2]   // Vertex 3 connects to vertices 0 and 2
-]</code></pre>
-                
-                <p><strong>Space Complexity Comparison:</strong></p>
                 <ul>
-                    <li>Adjacency Matrix: O(V²) - inefficient for sparse graphs</li>
-                    <li>Adjacency List: O(V + E) - more efficient for sparse graphs</li>
+                    <li><strong>Bus Topology:</strong> All devices connected to one main cable</li>
+                    <li><strong>Star Topology:</strong> All devices connect to a central hub or switch</li>
+                    <li><strong>Ring Topology:</strong> Each device connects to two others in a loop</li>
+                    <li><strong>Mesh Topology:</strong> Devices are interconnected with many paths between them</li>
                 </ul>
                 
-                <button class="next-section" onclick="showSection(2)">Continue to Graph Properties</button>
+                <p>Star topology is most common in modern networks due to reliability and easy troubleshooting.</p>
+                
+                <button class="next-section" onclick="showSection(3)">Continue to Network Devices</button>
             </div>
             
-            <!-- Graph Properties Section -->
-            <div class="section" id="section-2" style="display: none;">
-                <h2>Graph Properties and Paths</h2>
-                <p>Understanding the properties of graphs and the concept of paths is essential for applying graph theory to solve real-world problems.</p>
-                
-                <h3>Important Graph Properties</h3>
-                
-                <h4>Connectivity</h4>
-                <p>A graph is connected if there is a path between every pair of vertices. Connectivity has important implications for network reliability and communication.</p>
+            <!-- Network Devices Section -->
+            <div class="section" id="section-3" style="display: none;">
+                <h2>Network Devices and Connections</h2>
+                <p>Various hardware components work together to build a functioning network. Understanding these devices is essential for network design and troubleshooting.</p>
                 
                 <div class="image-container">
-                    <img src="23.png" alt="Connected vs disconnected graphs">
+                    <img src="42.avif" alt="Network Devices Illustration" onerror="this.onerror=null; this.src='/api/placeholder/800/400';">
                 </div>
                 
-                <p>In a disconnected graph, vertices form separate components that are not reachable from each other.</p>
-                
-                <h4>Degree</h4>
-                <p>The degree of a vertex is the number of edges connected to it.</p>
-                <ul>
-                    <li>In an undirected graph, each vertex has a single degree value.</li>
-                    <li>In a directed graph, vertices have both in-degree (incoming edges) and out-degree (outgoing edges).</li>
-                </ul>
-                
-                <p><strong>Handshaking Theorem:</strong> In any undirected graph, the sum of all vertex degrees equals twice the number of edges (2|E|).</p>
-                
-                <h4>Cycles and Acyclicity</h4>
-                <p>A cycle is a path that starts and ends at the same vertex, with no repeated edges.</p>
-                <ul>
-                    <li>A graph with no cycles is called acyclic.</li>
-                    <li>A directed acyclic graph (DAG) is particularly important in many applications including scheduling, data processing, and dependency resolution.</li>
-                </ul>
-                
-                <h3>Paths and Walks</h3>
-                
-                <p>A path is a sequence of vertices where each adjacent pair is connected by an edge. Paths have several important variations:</p>
-                
+                <h3>Key Network Devices</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>Type</th>
-                            <th>Description</th>
+                            <th>Device</th>
+                            <th>Purpose</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Walk</td>
-                            <td>A sequence of vertices and edges (can repeat both vertices and edges)</td>
+                            <td>Router</td>
+                            <td>Connects different networks (e.g., home network to the internet)</td>
                         </tr>
                         <tr>
-                            <td>Trail</td>
-                            <td>A walk with no repeated edges (can repeat vertices)</td>
+                            <td>Switch</td>
+                            <td>Connects multiple devices in a LAN and manages traffic</td>
                         </tr>
                         <tr>
-                            <td>Path</td>
-                            <td>A walk with no repeated vertices or edges</td>
+                            <td>Modem</td>
+                            <td>Converts signals from your ISP into data your router can use</td>
                         </tr>
                         <tr>
-                            <td>Cycle</td>
-                            <td>A path that starts and ends at the same vertex</td>
+                            <td>Access Point</td>
+                            <td>Adds Wi-Fi capabilities to a wired network</td>
+                        </tr>
+                        <tr>
+                            <td>Firewall</td>
+                            <td>Protects the network by blocking unauthorized access</td>
                         </tr>
                     </tbody>
                 </table>
                 
-                <h4>Path Length and Distance</h4>
-                <p>The length of a path is typically the number of edges in the path. In a weighted graph, it's the sum of the edge weights.</p>
-                
-                <p>The distance between two vertices is the length of the shortest path between them. If no path exists, the distance is considered infinite.</p>
-                
-                <h3>Special Paths</h3>
-                
-                <h4>Eulerian Path and Circuit</h4>
-                <p>An Eulerian path visits every edge in a graph exactly once. An Eulerian circuit is an Eulerian path that starts and ends at the same vertex.</p>
-                
-                <p>A graph has an Eulerian circuit if and only if:</p>
+                <h3>Types of Connections</h3>
                 <ul>
-                    <li>All vertices have even degree</li>
-                    <li>The graph is connected (or all vertices with non-zero degree are connected)</li>
+                    <li><strong>Wired Networks:</strong> Use cables like Ethernet for faster and more stable connections</li>
+                    <li><strong>Wireless Networks:</strong> Use radio waves (like Wi-Fi and Bluetooth) for mobility and convenience</li>
                 </ul>
                 
-                <h4>Hamiltonian Path and Circuit</h4>
-                <p>A Hamiltonian path visits every vertex in a graph exactly once. A Hamiltonian circuit is a Hamiltonian path that forms a cycle.</p>
+                <h3>Network Models</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Client-Server</td>
+                            <td>Clients request data from a central server</td>
+                            <td>Websites, school database</td>
+                        </tr>
+                        <tr>
+                            <td>Peer-to-Peer (P2P)</td>
+                            <td>Devices share data directly</td>
+                            <td>Bluetooth file sharing, torrents</td>
+                        </tr>
+                    </tbody>
+                </table>
                 
-                <p>Unlike Eulerian paths, there's no simple characterization for when a graph has a Hamiltonian path. Finding a Hamiltonian path is computationally harder (NP-complete).</p>
-                
-                <button class="next-section" onclick="showSection(3)">Continue to Graph Algorithms</button>
+                <button class="next-section" onclick="showSection(4)">Continue to Network Addressing</button>
             </div>
             
-            <!-- Graph Algorithms Section -->
-            <div class="section" id="section-3" style="display: none;">
-                <h2>Graph Traversal and Algorithms</h2>
-                <p>Graph traversal refers to the process of visiting each vertex in a graph. Various algorithms exist for traversing graphs and solving graph-related problems.</p>
+            <!-- Network Addressing Section -->
+            <div class="section" id="section-4" style="display: none;">
+                <h2>Network Addressing and Protocols</h2>
+                <p>For devices to communicate on a network, they need addressing systems and protocols that govern how data is transmitted.</p>
                 
-                <h3>Basic Graph Traversal</h3>
-                
-                <h4>1. Depth-First Search (DFS)</h4>
-                <p>DFS explores as far as possible along each branch before backtracking. It uses a stack (often implemented using recursion) to keep track of vertices to be explored.</p>
-                
-                <div class="image-container">
-                    <img src="24.jpg" alt="Depth-First Search illustration">
-                </div>
-                
-                <pre><code>// DFS pseudocode
-function DFS(graph, startVertex):
-    let visited = new Set()
-    
-    function explore(vertex):
-        // Mark vertex as visited
-        visited.add(vertex)
-        
-        // Print or process the current vertex
-        print(vertex)
-        
-        // Visit all adjacent vertices
-        for each neighbor of graph[vertex]:
-            if neighbor not in visited:
-                explore(neighbor)
-    
-    explore(startVertex)
-</code></pre>
-                
-                <p><strong>Applications of DFS:</strong> Topological sorting, cycle detection, path finding, and maze generation.</p>
-                
-                <h4>2. Breadth-First Search (BFS)</h4>
-                <p>BFS explores all neighbors at the present depth before moving on to vertices at the next depth level. It uses a queue to keep track of vertices to be explored.</p>
-                
-                <div class="image-container">
-                    <img src="25.jpg" alt="Breadth-First Search illustration">
-                </div>
-                
-                <pre><code>// BFS pseudocode
-function BFS(graph, startVertex):
-    let visited = new Set()
-    let queue = new Queue()
-    
-    // Mark the start vertex as visited and enqueue it
-    visited.add(startVertex)
-    queue.enqueue(startVertex)
-    
-    while queue is not empty:
-        // Dequeue a vertex from queue
-        let vertex = queue.dequeue()
-        
-        // Print or process the current vertex
-        print(vertex)
-        
-        // Visit all adjacent vertices
-        for each neighbor of graph[vertex]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.enqueue(neighbor)
-</code></pre>
-                
-                <p><strong>Applications of BFS:</strong> Shortest path (unweighted), connected components, and network broadcasting.</p>
-                
-                <h3>Shortest Path Algorithms</h3>
-                
-                <h4>1. Dijkstra's Algorithm</h4>
-                <p>Dijkstra's algorithm finds the shortest path from a single source vertex to all other vertices in a weighted graph with non-negative weights.</p>
-                
-                <pre><code>// Dijkstra's algorithm pseudocode
-function Dijkstra(graph, startVertex):
-    let distances = {}  // Stores shortest distance from start to each vertex
-    let previous = {}   // Stores previous vertex in optimal path
-    let unvisited = new PriorityQueue()
-    
-    // Initialize distances
-    for each vertex v in graph:
-        if v equals startVertex:
-            distances[v] = 0
-        else:
-            distances[v] = INFINITY
-        previous[v] = null
-        unvisited.add(v, distances[v])
-    
-    while unvisited is not empty:
-        // Get vertex with minimum distance
-        let current = unvisited.extractMin()
-        
-        // If we've reached a vertex with infinite distance, 
-        // we've processed all reachable vertices
-        if distances[current] equals INFINITY:
-            break
-        
-        // Check all neighbors of current
-        for each neighbor of graph[current]:
-            let weight = graph.getWeight(current, neighbor)
-            let distanceCandidate = distances[current] + weight
-            
-            // If we found a shorter path to neighbor
-            if distanceCandidate < distances[neighbor]:
-                // Update distance and previous vertex
-                distances[neighbor] = distanceCandidate
-                previous[neighbor] = current
-                unvisited.decreaseKey(neighbor, distanceCandidate)
-    
-    return {distances, previous}
-</code></pre>
-                
-                <h4>2. Bellman-Ford Algorithm</h4>
-                <p>Similar to Dijkstra's, but can handle graphs with negative edge weights. It also detects negative cycles.</p>
-                
-                <h3>Minimum Spanning Tree Algorithms</h3>
-                <p>A minimum spanning tree (MST) is a subset of edges that connects all vertices in a weighted graph while minimizing the total edge weight.</p>
-                
-                <h4>1. Kruskal's Algorithm</h4>
-                <p>Kruskal's algorithm builds the MST by adding edges in ascending order of weight, avoiding cycles.</p>
-                
-                <h4>2. Prim's Algorithm</h4>
-                <p>Prim's algorithm grows the MST one vertex at a time, always adding the lowest-weight edge that connects a vertex in the tree to a vertex outside the tree.</p>
-                
-                <h3>Real-World Applications</h3>
+                <h3>Network Addressing</h3>
                 <ul>
-                    <li><strong>Social Networks:</strong> Analyzing connections between people</li>
-                    <li><strong>Transportation:</strong> Finding optimal routes and network design</li>
-                    <li><strong>Computer Networks:</strong> Routing algorithms and network topology</li>
-                    <li><strong>Recommendation Systems:</strong> Using graph-based approaches to find similar items</li>
-                    <li><strong>Scheduling:</strong> Using directed acyclic graphs to manage dependencies</li>
+                    <li><strong>IP Address:</strong> A unique number that identifies a device on a network (like a digital home address)</li>
+                    <li><strong>MAC Address:</strong> A permanent hardware address unique to each device's network interface</li>
                 </ul>
+                
+                <h3>Network Performance Concepts</h3>
+                <ul>
+                    <li><strong>Bandwidth:</strong> The amount of data that can be transmitted in a set amount of time (like the width of a road)</li>
+                    <li><strong>Latency:</strong> The delay before data starts moving (like the reaction time of a car)</li>
+                </ul>
+                
+                <h3>Common Internet Protocols</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Protocol</th>
+                            <th>Function</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HTTP/HTTPS</td>
+                            <td>Transfers web page data</td>
+                        </tr>
+                        <tr>
+                            <td>FTP</td>
+                            <td>Uploads and downloads files</td>
+                        </tr>
+                        <tr>
+                            <td>TCP/IP</td>
+                            <td>Core set of rules for communication on the internet</td>
+                        </tr>
+                        <tr>
+                            <td>DNS</td>
+                            <td>Translates website names into IP addresses</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <button class="next-section" onclick="showSection(5)">Continue to Real-World Examples</button>
+            </div>
+            
+            <!-- Real-World Examples Section -->
+            <div class="section" id="section-5" style="display: none;">
+                <h2>Real-World Network Examples</h2>
+                <p>Let's look at how networks function in everyday scenarios:</p>
+                
+                <h3>Sending an Email</h3>
+                <p>Your device connects to a mail server using protocols like SMTP and IMAP. The email travels across multiple networks before reaching its destination.</p>
+                
+                <h3>Streaming a Video</h3>
+                <p>Your device uses TCP/IP to request and receive video packets from a server. The data is broken into packets, transmitted across the internet, and reassembled on your device.</p>
+                
+                <h3>Browsing a Website</h3>
+                <p>Your browser uses HTTP to load the content and DNS to find the site's IP. The web server responds by sending the requested web page data back to your device.</p>
+                
+                <div class="interactive">
+                    <h3>Think About It</h3>
+                    <p>Consider the networks you use every day:</p>
+                    <ul>
+                        <li>How many different networks do you connect to in a typical day?</li>
+                        <li>What types of data do you transmit and receive?</li>
+                        <li>How would your daily activities be affected if these networks were unavailable?</li>
+                    </ul>
+                </div>
                 
                 <button class="next-section" onclick="completeCourse()">Complete Lesson</button>
             </div>
             
             <!-- Lesson Navigation -->
             <div class="lesson-navigation">
-                <a href="data_structures.html" class="nav-button">Previous Lesson</a>
-                <a href="computational.html" class="nav-button" id="next-lesson-btn" style="display: none;">Next Lesson: Computational Thinking</a>
+                <a href="datastructures.html" class="nav-button">Previous Lesson</a>
+                <a href="computational.html" class="nav-button" id="next-lesson-btn" style="display: none;">Next Lesson: Basics of Graphical Programmings</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideoModal()">&times;</span>
+            <div class="video-container">
+                <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -746,7 +889,6 @@ function Dijkstra(graph, startVertex):
                 <h3>Contact Us</h3>
                 <ul class="footer-links">
                     <li>Email: iman.karahmetovic@2gimnazija.edu.ba</li>
-                    
                 </ul>
             </div>
         </div>
@@ -756,10 +898,16 @@ function Dijkstra(graph, startVertex):
         </div>
     </footer>
     
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartLearn - Introduction to Computer Networks</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
+    <!-- Script must be placed in head to ensure functions are defined before they're called -->
     <script>
         // Variables to track state
         let currentSection = 1;
-        let totalSections = 3;
+        let totalSections = 5;
         
         // Update progress bar
         function updateProgress() {
@@ -798,14 +946,79 @@ function Dijkstra(graph, startVertex):
             document.getElementById('progress-fill').style.width = '100%';
             
             // Show completion message
-            alert('Congratulations! You have completed the Introduction to Graph Theory lesson.');
+            alert('Congratulations! You have completed the Introduction to Computer Networks lesson.');
             
             // Show the next lesson button
             document.getElementById('next-lesson-btn').style.display = 'block';
         }
         
-        // Initialize
-        updateProgress();
+        // Video modal functionality
+        function openVideoModal(videoUrl) {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('videoFrame');
+            
+            // Set the video URL
+            videoFrame.src = videoUrl;
+            
+            // Display the modal
+            modal.style.display = 'block';
+        }
+        
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('videoFrame');
+            
+            // Stop the video by clearing the source
+            videoFrame.src = '';
+            
+            // Hide the modal
+            modal.style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target == modal) {
+                closeVideoModal();
+            }
+        }
+        
+        // Initialize the page
+        window.onload = function() {
+            // Set up initial progress
+            updateProgress();
+            
+            // Add event listeners for video buttons (if any)
+            const videoButtons = document.querySelectorAll('.video-play-button');
+            
+            videoButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Prevent default link behavior
+                    e.preventDefault();
+                    
+                    // Get video URL from href attribute
+                    const videoUrl = this.getAttribute('href');
+                    
+                    // Check if it's a YouTube URL and modify it for embedding
+                    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                        // Extract video ID and create embed URL
+                        let videoId = '';
+                        
+                        if (videoUrl.includes('youtu.be')) {
+                            videoId = videoUrl.split('/').pop().split('?')[0];
+                        } else if (videoUrl.includes('watch?v=')) {
+                            videoId = new URL(videoUrl).searchParams.get('v');
+                        }
+                        
+                        if (videoId) {
+                            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                            openVideoModal(embedUrl);
+                        }
+                    } else {
+                        // For non-YouTube videos, just use the URL as is
+                        openVideoModal(videoUrl);
+                    }
+                });
+            });
+        };
     </script>
-</body>
-</html>
