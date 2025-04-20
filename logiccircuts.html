@@ -490,6 +490,137 @@
             border: none;
         }
     </style>
+    <script>
+        // Variables to track state
+        let currentSection = 1;
+        let totalSections = 3;
+        
+        // Update progress bar
+        function updateProgress() {
+            const progressPercentage = Math.round((currentSection / totalSections) * 100);
+            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+        }
+        
+        // Show a specific section
+        function showSection(sectionNumber) {
+            // Hide all sections
+            for (let i = 1; i <= totalSections; i++) {
+                document.getElementById('section-' + i).style.display = 'none';
+            }
+            
+            // Show the requested section
+            document.getElementById('section-' + sectionNumber).style.display = 'block';
+            
+            // Update current section
+            currentSection = sectionNumber;
+            
+            // Update progress
+            updateProgress();
+            
+            // Scroll to top of the section
+            window.scrollTo({
+                top: document.querySelector('.lesson-header').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Complete the course
+        function completeCourse() {
+            // Update progress to 100%
+            document.getElementById('progress-percentage').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '100%';
+            
+            // Show completion message
+            alert('Congratulations! You have completed the Logic Circuits & Digital Design lesson.');
+            
+            // Show the next lesson button
+            document.getElementById('next-lesson-btn').style.display = 'block';
+        }
+        
+        // Video modal functionality
+        function openVideoModal(videoUrl) {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('videoFrame');
+            
+            // Set the video URL
+            videoFrame.src = videoUrl;
+            
+            // Display the modal
+            modal.style.display = 'block';
+        }
+        
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const videoFrame = document.getElementById('videoFrame');
+            
+            // Stop the video by clearing the source
+            videoFrame.src = '';
+            
+            // Hide the modal
+            modal.style.display = 'none';
+        }
+        
+        // Initialize page after DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update initial progress
+            updateProgress();
+            
+            // Add event listeners to navigation buttons using data attributes
+            document.querySelectorAll('.next-section').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Get section from data attribute or default to next section
+                    const nextSection = this.getAttribute('data-section') || currentSection + 1;
+                    showSection(parseInt(nextSection));
+                });
+            });
+            
+            // Add event listeners for video play buttons
+            document.querySelectorAll('.video-play-button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Prevent default link behavior
+                    e.preventDefault();
+                    
+                    // Get video URL from href attribute
+                    const videoUrl = this.getAttribute('href');
+                    
+                    // Check if it's a YouTube URL and modify it for embedding
+                    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                        // Extract video ID and create embed URL
+                        let videoId = '';
+                        
+                        if (videoUrl.includes('youtu.be')) {
+                            videoId = videoUrl.split('/').pop().split('?')[0];
+                        } else if (videoUrl.includes('watch?v=')) {
+                            videoId = new URL(videoUrl).searchParams.get('v');
+                        }
+                        
+                        if (videoId) {
+                            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                            openVideoModal(embedUrl);
+                        }
+                    } else {
+                        // For non-YouTube videos, just use the URL as is
+                        openVideoModal(videoUrl);
+                    }
+                });
+            });
+            
+            // Complete course button
+            const completeButton = document.querySelector('.next-section[data-complete="true"]');
+            if (completeButton) {
+                completeButton.addEventListener('click', completeCourse);
+            }
+        });
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target == modal) {
+                closeVideoModal();
+            }
+        };
+    </script>
 </head>
 <body>
     <!-- Navbar -->
@@ -555,7 +686,7 @@
                             <div class="video-info">
                                 <h3>Understanding Logic Circuits</h3>
                                 <p>A comprehensive overview of digital logic circuits and their applications in modern computing systems</p>
-                                <a href="https://youtu.be/JQBRzsPhw2w?feature=shared" target="_blank" class="video-play-button">Watch Video</a>
+                                <a href="https://youtu.be/JQBRzsPhw2w?feature=shared" class="video-play-button">Watch Video</a>
                             </div>
                         </div>
                     </div>
@@ -629,7 +760,7 @@ AND(A,B) = NOR(NOR(A,A), NOR(B,B))</code></pre>
                 
                 <p>The ability to create any logic function using just one type of gate is vital for simplified manufacturing and design consistency.</p>
                 
-                <button class="next-section" onclick="showSection(2)">Continue to Combinational Circuits</button>
+                <button class="next-section" data-section="2">Continue to Combinational Circuits</button>
             </div>
             
             <!-- Combinational Circuits Section -->
@@ -689,7 +820,7 @@ A B | S C
                 
                 <p>Full adders can be combined to add multi-bit numbers, forming the arithmetic core of a computer's processor.</p>
                 
-                <button class="next-section" onclick="showSection(3)">Continue to Sequential Circuits</button>
+                <button class="next-section" data-section="3">Continue to Sequential Circuits</button>
             </div>
             
             <!-- Sequential Circuits Section -->
@@ -755,7 +886,7 @@ A B | S C
                 <h3>Clock Signals</h3>
                 <p>Sequential circuits require a clock signal to coordinate when state changes occur. The clock is a regular, oscillating signal that triggers flip-flops to capture input data at specific times, ensuring synchronized operation across the circuit.</p>
                 
-                <button class="next-section" onclick="completeCourse()">Complete Lesson</button>
+                <button class="next-section" data-section="complete" data-complete="true">Complete Lesson</button>
             </div>
             
             <!-- Lesson Navigation -->
@@ -807,120 +938,6 @@ A B | S C
             <p>&copy; 2025 SmartLearn | All Rights Reserved</p>
         </div>
     </footer>
-    
-    <script>
-        // Variables to track state
-        let currentSection = 1;
-        let totalSections = 3;
-        
-        // Update progress bar
-        function updateProgress() {
-            const progressPercentage = Math.round((currentSection / totalSections) * 100);
-            document.getElementById('progress-percentage').textContent = progressPercentage + '%';
-            document.getElementById('progress-fill').style.width = progressPercentage + '%';
-        }
-        
-        // Show a specific section
-        function showSection(sectionNumber) {
-            // Hide all sections
-            for (let i = 1; i <= totalSections; i++) {
-                document.getElementById('section-' + i).style.display = 'none';
-            }
-            
-            // Show the requested section
-            document.getElementById('section-' + sectionNumber).style.display = 'block';
-            
-            // Update current section
-            currentSection = sectionNumber;
-            
-            // Update progress
-            updateProgress();
-            
-            // Scroll to top of the section
-            window.scrollTo({
-                top: document.querySelector('.lesson-header').offsetTop,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Complete the course
-        function completeCourse() {
-            // Update progress to 100%
-            document.getElementById('progress-percentage').textContent = '100%';
-            document.getElementById('progress-fill').style.width = '100%';
-            
-            // Show completion message
-            alert('Congratulations! You have completed the Logic Circuits & Digital Design lesson.');
-            
-            // Show the next lesson button
-            document.getElementById('next-lesson-btn').style.display = 'block';
-        }
-        
-        // Video modal functionality
-        function openVideoModal(videoUrl) {
-            const modal = document.getElementById('videoModal');
-            const videoFrame = document.getElementById('videoFrame');
-            
-            // Set the video URL
-            videoFrame.src = videoUrl;
-            
-            // Display the modal
-            modal.style.display = 'block';
-        }
-        
-        function closeVideoModal() {
-            const modal = document.getElementById('videoModal');
-            const videoFrame = document.getElementById('videoFrame');
-            
-            // Stop the video by clearing the source
-            videoFrame.src = '';
-            
-            // Hide the modal
-            modal.style.display = 'none';
-        }
-        
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById('videoModal');
-            if (event.target == modal) {
-                closeVideoModal();
-            }
-        }
-        
-        // Initialize
-        updateProgress();
-        
-        // Add click event listeners to video play buttons
-        document.addEventListener('DOMContentLoaded', function() {
-            const videoButtons = document.querySelectorAll('.video-play-button');
-            
-            videoButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    // Prevent default link behavior
-                    e.preventDefault();
-                    
-                    // Get video URL from href attribute
-                    const videoUrl = this.getAttribute('href');
-                    
-                    // Check if it's a YouTube URL and modify it for embedding
-                    if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                        // Extract video ID and create embed URL
-                        let videoId = '';
-                        
-                        if (videoUrl.includes('youtu.be')) {
-                            videoId = videoUrl.split('/').pop().split('?')[0];
-                        } else if (videoUrl.includes('watch?v=')) {
-                            videoId = new URL(videoUrl).searchParams.get('v');
-                        }
-                        
-                        if (videoId) {
-                            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                            openVideoModal(embedUrl);
-                        }
-                    } else {
-                        // For non-YouTube videos, just use the URL as is
-                        openVideoModal(videoUrl);
-                    }
-                });
-            });
-        });
+</body>
+</html>
+                
